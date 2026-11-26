@@ -30,7 +30,8 @@ jobs:
           unzip -q t.tpz -d tpl && mv tpl/templates/* ~/.local/share/godot/export_templates/${GV}.stable/
       - name: Keystore + editor settings
         run: |
-          keytool -genkeypair -v -keystore $HOME/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          base64 -d keystore.b64 > $HOME/debug.keystore
+          sed -i "s/^version\/code=.*/version\/code=${{ github.run_number }}/" export_presets.cfg
           mkdir -p ~/.config/godot
           cat > ~/.config/godot/editor_settings-4.tres <<EOT
           [gd_resource type="EditorSettings" format=3]
@@ -57,3 +58,40 @@ jobs:
           name: Godot spike APK
           files: build/truck.apk
           prerelease: true
+
+  verify:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Fetch APK
+        run: |
+          curl -sL -o truck.apk https://github.com/${{ github.repository }}/releases/download/godot-latest/truck.apk
+          ls -l truck.apk
+      - name: Emulator run
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: bash verify.sh
+      - name: Push screenshots
+        if: always()
+        run: |
+          git config user.name ci && git config user.email ci@example.com
+          git checkout --orphan shots
+          git rm -rf . >/dev/null 2>&1 || true
+          cp /tmp/shot*.png /tmp/log.txt . 2>/dev/null || true
+          git add -f *.png log.txt 2>/dev/null || true
+          git commit -m "shots" || true
+          git push -f origin shots || true
