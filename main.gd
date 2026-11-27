@@ -82,6 +82,19 @@ func _ready() -> void:
 	rail_m.albedo_color = Color(0.7, 0.72, 0.75)
 	rail_m.metallic = 0.8
 	rail_m.roughness = 0.35
+	var hill_m := StandardMaterial3D.new()
+	hill_m.albedo_color = Color(0.3, 0.42, 0.28)
+	hill_m.roughness = 1.0
+	var pole_m := StandardMaterial3D.new()
+	pole_m.albedo_color = Color(0.35, 0.3, 0.26)
+	var bush_mesh := SphereMesh.new()
+	bush_mesh.radius = 0.9
+	bush_mesh.height = 1.3
+	bush_mesh.radial_segments = 8
+	bush_mesh.rings = 4
+	var bush_m := StandardMaterial3D.new()
+	bush_m.albedo_color = Color(0.17, 0.36, 0.13)
+	bush_m.roughness = 1.0
 	var tree_mesh := _make_tree_mesh()
 	var broad_mesh := _make_broad_mesh()
 	var rng := RandomNumberGenerator.new()
@@ -135,6 +148,49 @@ func _ready() -> void:
 			d.material_override = line_m
 			d.position = Vector3(0, 0.04, -TILE / 2.0 + k * 10.0 + 5.0)
 			t.add_child(d)
+		var bm := MultiMesh.new()
+		bm.transform_format = MultiMesh.TRANSFORM_3D
+		bm.mesh = bush_mesh
+		bm.instance_count = 30
+		for n in range(30):
+			var sd := 1.0 if rng.randf() < 0.5 else -1.0
+			var bs := rng.randf_range(0.7, 1.8)
+			bm.set_instance_transform(n, Transform3D(Basis().scaled(Vector3(bs, bs * 0.8, bs)), Vector3(sd * rng.randf_range(6.6, 14.0), 0.4, rng.randf_range(-TILE / 2.0, TILE / 2.0))))
+		var bmi := MultiMeshInstance3D.new()
+		bmi.multimesh = bm
+		bmi.material_override = bush_m
+		t.add_child(bmi)
+		for hh in range(2):
+			var hl := MeshInstance3D.new()
+			var hs := SphereMesh.new()
+			hs.radius = 1.0
+			hs.height = 1.0
+			hs.radial_segments = 14
+			hs.rings = 6
+			hl.mesh = hs
+			hl.material_override = hill_m
+			var hsd := -1.0 if hh == 0 else 1.0
+			hl.scale = Vector3(rng.randf_range(60.0, 130.0), rng.randf_range(18.0, 50.0), rng.randf_range(40.0, 70.0))
+			hl.position = Vector3(hsd * rng.randf_range(120.0, 200.0), -3.0, rng.randf_range(-TILE / 2.0, TILE / 2.0))
+			t.add_child(hl)
+		if i % 2 == 0:
+			var pl := MeshInstance3D.new()
+			var pb := CylinderMesh.new()
+			pb.top_radius = 0.1
+			pb.bottom_radius = 0.14
+			pb.height = 9.0
+			pb.radial_segments = 6
+			pl.mesh = pb
+			pl.material_override = pole_m
+			pl.position = Vector3(7.2, 4.5, 0)
+			t.add_child(pl)
+			var arm := MeshInstance3D.new()
+			var ab2 := BoxMesh.new()
+			ab2.size = Vector3(2.2, 0.12, 0.12)
+			arm.mesh = ab2
+			arm.material_override = pole_m
+			arm.position = Vector3(6.2, 8.8, 0)
+			t.add_child(arm)
 		var mm2 := MultiMesh.new()
 		mm2.transform_format = MultiMesh.TRANSFORM_3D
 		mm2.mesh = broad_mesh
@@ -279,14 +335,16 @@ func _ready() -> void:
 	toast_lbl.add_theme_constant_override("outline_size", 8)
 	ui.add_child(toast_lbl)
 	menu_root = PanelContainer.new()
-	menu_root.position = Vector2(300, 60)
-	menu_root.size = Vector2(680, 600)
+	menu_root.position = Vector2(300, 40)
+	menu_root.size = Vector2(680, 640)
 	menu_root.mouse_filter = Control.MOUSE_FILTER_STOP
 	menu_box = VBoxContainer.new()
 	menu_box.add_theme_constant_override("separation", 10)
 	menu_root.add_child(menu_box)
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.05, 0.07, 0.1, 0.92)
+	sb.bg_color = Color(0.04, 0.05, 0.07, 0.9)
+	sb.border_color = Color(0.98, 0.62, 0.1)
+	sb.border_width_top = 5
 	sb.set_corner_radius_all(18)
 	sb.content_margin_left = 24
 	sb.content_margin_right = 24
@@ -387,11 +445,29 @@ func _make_offers() -> void:
 		var pay: int = int(round(d / 5.0 * (0.45 + tons / 28.0) / 10.0) * 10.0) + randi_range(0, 4) * 10
 		offers.append({"to": ti, "d": d, "tons": tons, "pay": pay, "t": int(d / 19.0) + 25, "cargo": CARGO[randi() % CARGO.size()]})
 
+func _sbox(col: Color, border: Color, bw: int) -> StyleBoxFlat:
+	var s := StyleBoxFlat.new()
+	s.bg_color = col
+	s.set_corner_radius_all(14)
+	s.border_color = border
+	s.border_width_left = bw
+	s.content_margin_left = 22
+	s.content_margin_right = 18
+	s.content_margin_top = 10
+	s.content_margin_bottom = 10
+	return s
+
 func _mk_btn(txt: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = txt
-	b.custom_minimum_size = Vector2(620, 70)
-	b.add_theme_font_size_override("font_size", 28)
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.custom_minimum_size = Vector2(620, 84)
+	b.add_theme_font_size_override("font_size", 26)
+	b.add_theme_stylebox_override("normal", _sbox(Color(0.13, 0.16, 0.2, 0.95), Color(0.98, 0.62, 0.1), 8))
+	b.add_theme_stylebox_override("hover", _sbox(Color(0.2, 0.24, 0.3, 0.95), Color(1.0, 0.75, 0.2), 8))
+	b.add_theme_stylebox_override("pressed", _sbox(Color(0.98, 0.62, 0.1, 0.95), Color(1, 1, 1), 8))
+	b.add_theme_color_override("font_color", Color(0.93, 0.95, 0.98))
+	b.add_theme_color_override("font_pressed_color", Color(0.05, 0.05, 0.05))
 	b.pressed.connect(cb)
 	menu_box.add_child(b)
 	return b
@@ -410,19 +486,32 @@ func _build_menu() -> void:
 	for c in menu_box.get_children():
 		c.queue_free()
 	var t := Label.new()
-	t.text = "%s  |  %s" % [CITIES[city][0], menu_msg]
-	t.add_theme_font_size_override("font_size", 26)
+	t.text = "%s" % CITIES[city][0].to_upper()
+	t.add_theme_font_size_override("font_size", 44)
+	t.add_theme_color_override("font_color", Color(0.98, 0.7, 0.2))
+	menu_box.add_child(t)
+	var t2 := Label.new()
+	t2.text = menu_msg
+	t2.add_theme_font_size_override("font_size", 22)
+	t2.add_theme_color_override("font_color", Color(0.75, 0.8, 0.88))
+	t2.autowrap_mode = TextServer.AUTOWRAP_WORD
+	t2.custom_minimum_size = Vector2(620, 0)
+	menu_box.add_child(t2)
+	t = Label.new()
+	t.text = ""
+	t.add_theme_font_size_override("font_size", 4)
 	t.autowrap_mode = TextServer.AUTOWRAP_WORD
 	t.custom_minimum_size = Vector2(620, 0)
 	menu_box.add_child(t)
 	var s := Label.new()
-	s.text = "Money %d   Fuel %d%%   Jobs %d" % [money, int(fuel), jobs_done]
+	s.text = "EGP %d      Fuel %d%%      Jobs done %d" % [money, int(fuel), jobs_done]
 	s.add_theme_font_size_override("font_size", 24)
+	s.add_theme_color_override("font_color", Color(0.55, 0.9, 0.6))
 	menu_box.add_child(s)
 	for i in range(offers.size()):
 		var o: Dictionary = offers[i]
 		var ii := i
-		_mk_btn("%s %dt to %s  %dm  %d EGP  %ds" % [o["cargo"], o["tons"], CITIES[o["to"]][0], o["d"], o["pay"], o["t"]], func(): _start_job(ii))
+		_mk_btn("%s  >  %s\n%s  %dt   %.1f km   %d EGP   %ds" % [CITIES[city][0], CITIES[o["to"]][0], o["cargo"], o["tons"], o["d"] / 1000.0, o["pay"], o["t"]], func(): _start_job(ii))
 	var need := int(ceil((100.0 - fuel) * 3.0))
 	_mk_btn("Refuel (%d)" % need, func(): _refuel())
 
