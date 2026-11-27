@@ -3,7 +3,7 @@ adb install -r truck.apk
 adb shell run-as com.sasa.truckspike sh -c 'mkdir -p files; touch files/auto'
 adb logcat -c
 adb shell am start -n com.sasa.truckspike/com.godot.game.GodotApp
-sleep 30
+sleep 60
 adb exec-out screencap -p > /tmp/shot1.png
 adb shell input swipe 553 278 553 278 9000 &
 sleep 7
