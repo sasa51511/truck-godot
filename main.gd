@@ -183,6 +183,15 @@ func _ready() -> void:
 	cam.fov = 62
 	cam.far = 500
 	add_child(cam)
+	var svp := SubViewport.new()
+	svp.size = Vector2i(256, 160)
+	svp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	add_child(svp)
+	rcam = Camera3D.new()
+	rcam.fov = 55
+	rcam.far = 300
+	svp.add_child(rcam)
+	var vtex := svp.get_texture()
 	dash = Node3D.new()
 	cam.add_child(dash)
 	var dm := StandardMaterial3D.new()
@@ -202,9 +211,10 @@ func _ready() -> void:
 		mb.size = Vector3(0.32, 0.5, 0.04)
 		mr.mesh = mb
 		var mm2 := StandardMaterial3D.new()
-		mm2.albedo_color = Color(0.45, 0.55, 0.65)
-		mm2.metallic = 1.0
-		mm2.roughness = 0.1
+		mm2.albedo_texture = vtex
+		mm2.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		mm2.uv1_scale = Vector3(-1, 1, 1)
+		mm2.uv1_offset = Vector3(1, 0, 0)
 		mr.material_override = mm2
 		mr.position = Vector3(sx * 1.25, -0.05, -1.0)
 		mr.rotation.y = -sx * 0.45
@@ -261,10 +271,11 @@ var eng_ph := 0.0
 var eng_ph2 := 0.0
 var eng_noise := 0.0
 var dash: Node3D
+var rcam: Camera3D
 func _names(n: Node, d: int) -> void:
 	if n is MeshInstance3D:
 		var a: AABB = (n as MeshInstance3D).get_aabb()
-		print("MESH ", n.name, " pos=", (n as Node3D).global_position, " sz=", a.size)
+		print("MESH ", n.name, " pos=", snapped((n as Node3D).global_position, Vector3(0.01, 0.01, 0.01)), " sz=", snapped(a.size, Vector3(0.01, 0.01, 0.01)))
 	for c in n.get_children():
 		_names(c, d + 1)
 func _engine_setup() -> void:
@@ -478,6 +489,8 @@ func _process(dt: float) -> void:
 		cam.rotation = Vector3(-0.05, -steer * 0.05, 0)
 		cam.fov = 75
 	dash.visible = camview == 2
+	rcam.position = truck.position + Vector3(2.0 if camview == 2 else 0.0, 3.0, -4.0)
+	rcam.look_at(truck.position + Vector3(0, 2.0, 40.0))
 	for gn in glass_nodes:
 		gn.visible = camview != 2
 	if wheel_ui:
