@@ -12,7 +12,11 @@ var lbl: Label
 var tiles: Array = []
 var kl := false
 var kr := false
+var wsteer := 0.0
 var camview := 0
+var cab_pos := Vector3(-0.5, 2.7, -4.0)
+var wheel_ui
+var dial
 
 func _tex(p: String) -> Texture2D:
 	if ResourceLoader.exists(p):
@@ -79,6 +83,7 @@ func _ready() -> void:
 	rail_m.metallic = 0.8
 	rail_m.roughness = 0.35
 	var tree_mesh := _make_tree_mesh()
+	var broad_mesh := _make_broad_mesh()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
 	for i in range(NT):
@@ -130,11 +135,24 @@ func _ready() -> void:
 			d.material_override = line_m
 			d.position = Vector3(0, 0.04, -TILE / 2.0 + k * 10.0 + 5.0)
 			t.add_child(d)
+		var mm2 := MultiMesh.new()
+		mm2.transform_format = MultiMesh.TRANSFORM_3D
+		mm2.mesh = broad_mesh
+		mm2.instance_count = 40
+		for n in range(40):
+			var side2 := 1.0 if rng.randf() < 0.5 else -1.0
+			var s2 := rng.randf_range(0.9, 1.5)
+			var b2 := Basis().rotated(Vector3.UP, rng.randf() * 6.28).scaled(Vector3(s2, s2 * rng.randf_range(0.9, 1.3), s2))
+			mm2.set_instance_transform(n, Transform3D(b2, Vector3(side2 * rng.randf_range(8.0, 60.0), 0, rng.randf_range(-TILE / 2.0, TILE / 2.0))))
+		var mi2 := MultiMeshInstance3D.new()
+		mi2.multimesh = mm2
+		mi2.material_override = _tree_mat()
+		t.add_child(mi2)
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
 		mm.mesh = tree_mesh
-		mm.instance_count = 70
-		for n in range(70):
+		mm.instance_count = 45
+		for n in range(45):
 			var side := 1.0 if rng.randf() < 0.5 else -1.0
 			var x := side * (rng.randf_range(9.0, 70.0))
 			var z := rng.randf_range(-TILE / 2.0, TILE / 2.0)
@@ -155,6 +173,9 @@ func _ready() -> void:
 		var m: Node3D = ps.instantiate()
 		m.rotation.y = PI
 		truck.add_child(m)
+		var ab := _aabb(m, Transform3D.IDENTITY)
+		print("TRUCK AABB ", ab)
+		cab_pos = Vector3(ab.position.x + ab.size.x * 0.5 - 0.55, 2.55, ab.position.z + 3.4)
 	cam = Camera3D.new()
 	cam.fov = 62
 	cam.far = 500
@@ -165,10 +186,48 @@ func _ready() -> void:
 	lbl.position = Vector2(30, 20)
 	lbl.add_theme_font_size_override("font_size", 28)
 	ui.add_child(lbl)
-	_btn(ui, "<", Vector2(40, 560), "l")
-	_btn(ui, ">", Vector2(200, 560), "r")
+	wheel_ui = WheelCtl.new()
+	wheel_ui.main = self
+	wheel_ui.position = Vector2(50, 470)
+	wheel_ui.size = Vector2(240, 240)
+	ui.add_child(wheel_ui)
+	dial = DialCtl.new()
+	dial.main = self
+	dial.position = Vector2(480, 520)
+	dial.size = Vector2(320, 200)
+	dial.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ui.add_child(dial)
+	var cb := Button.new()
+	cb.text = "CAM"
+	cb.position = Vector2(1100, 20)
+	cb.custom_minimum_size = Vector2(150, 80)
+	cb.add_theme_font_size_override("font_size", 30)
+	cb.modulate = Color(1, 1, 1, 0.75)
+	cb.pressed.connect(func(): camview = (camview + 1) % 3)
+	ui.add_child(cb)
 	_btn(ui, "BRAKE", Vector2(920, 570), "brake")
 	_btn(ui, "GAS", Vector2(1090, 560), "gas")
+
+func _aabb(n: Node, xf: Transform3D) -> AABB:
+	var res := AABB()
+	var first := true
+	var stack := [[n, xf]]
+	while stack.size() > 0:
+		var it = stack.pop_back()
+		var node: Node = it[0]
+		var t: Transform3D = it[1]
+		if node is Node3D:
+			t = t * (node as Node3D).transform
+		if node is MeshInstance3D:
+			var a: AABB = t * (node as MeshInstance3D).get_aabb()
+			if first:
+				res = a
+				first = false
+			else:
+				res = res.merge(a)
+		for c in node.get_children():
+			stack.push_back([c, t])
+	return res
 
 func _tree_mat() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
@@ -176,11 +235,21 @@ func _tree_mat() -> StandardMaterial3D:
 	m.roughness = 0.95
 	return m
 
-func _add_part(st: SurfaceTool, mesh: Mesh, xf: Transform3D, col: Color) -> void:
+func _add_part(st: SurfaceTool, mesh: Mesh, xf: Transform3D, col: Color, jit: float = 0.0) -> void:
 	var arr := mesh.surface_get_arrays(0)
 	var cols := PackedColorArray()
-	for i in range(arr[Mesh.ARRAY_VERTEX].size()):
-		cols.append(col)
+	var vs: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+	var h := 1.0
+	for v in vs:
+		h = max(h, abs(v.y) * 2.0)
+	for i in range(vs.size()):
+		var v := vs[i]
+		var k := clampf(v.y / h + 0.5, 0.0, 1.0)
+		cols.append(Color(col.r, col.g, col.b) * (0.55 + 0.6 * k))
+		if jit > 0.0:
+			var hs: float = float(hash(Vector3i(int(v.x * 50.0), int(v.y * 50.0), int(v.z * 50.0))) % 1000) / 1000.0
+			vs[i] = v + Vector3(hs - 0.5, (hs * 3.7 - int(hs * 3.7)) - 0.5, (hs * 7.3 - int(hs * 7.3)) - 0.5) * jit
+	arr[Mesh.ARRAY_VERTEX] = vs
 	arr[Mesh.ARRAY_COLOR] = cols
 	var tmp := ArrayMesh.new()
 	tmp.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
@@ -196,13 +265,35 @@ func _make_tree_mesh() -> Mesh:
 	tr.radial_segments = 6
 	_add_part(st, tr, Transform3D(Basis(), Vector3(0, 1.0, 0)), Color(0.28, 0.2, 0.13))
 	var greens := [Color(0.1, 0.32, 0.12), Color(0.14, 0.4, 0.14), Color(0.2, 0.46, 0.16)]
-	for i in range(4):
+	for i in range(6):
 		var c := CylinderMesh.new()
 		c.top_radius = 0.0
-		c.bottom_radius = 2.0 - i * 0.4
-		c.height = 2.4
-		c.radial_segments = 8
-		_add_part(st, c, Transform3D(Basis(), Vector3(0, 2.2 + i * 1.3, 0)), greens[i % 3])
+		c.bottom_radius = 2.1 - i * 0.28
+		c.height = 2.0
+		c.radial_segments = 11
+		c.rings = 2
+		_add_part(st, c, Transform3D(Basis().rotated(Vector3.UP, i * 0.9), Vector3(0, 1.8 + i * 0.95, 0)), greens[i % 3], 0.55)
+	st.generate_normals()
+	return st.commit()
+
+func _make_broad_mesh() -> Mesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var tr := CylinderMesh.new()
+	tr.top_radius = 0.2
+	tr.bottom_radius = 0.34
+	tr.height = 3.2
+	tr.radial_segments = 6
+	_add_part(st, tr, Transform3D(Basis(), Vector3(0, 1.6, 0)), Color(0.3, 0.22, 0.15))
+	var gc := [Color(0.22, 0.45, 0.14), Color(0.28, 0.52, 0.16), Color(0.18, 0.4, 0.13), Color(0.34, 0.55, 0.2)]
+	var offs := [Vector3(0, 4.6, 0), Vector3(1.3, 3.9, 0.4), Vector3(-1.2, 4.0, -0.5), Vector3(0.3, 5.5, -0.9), Vector3(-0.4, 4.2, 1.3), Vector3(0.6, 3.6, -1.4)]
+	for i in range(offs.size()):
+		var s := SphereMesh.new()
+		s.radius = 1.5 - (i % 3) * 0.15
+		s.height = s.radius * 1.8
+		s.radial_segments = 10
+		s.rings = 6
+		_add_part(st, s, Transform3D(Basis(), offs[i]), gc[i % 4], 0.5)
 	st.generate_normals()
 	return st.commit()
 
@@ -239,7 +330,7 @@ func _process(dt: float) -> void:
 	if gas: speed = min(speed + 10.0 * dt, 28.0)
 	elif brake: speed = max(speed - 25.0 * dt, 0.0)
 	else: speed = max(speed - 4.0 * dt, 0.0)
-	var s := (1.0 if kr else 0.0) - (1.0 if kl else 0.0)
+	var s := wsteer + (1.0 if kr else 0.0) - (1.0 if kl else 0.0)
 	steer = lerp(steer, s, dt * 6.0)
 	truck.position.x = clamp(truck.position.x + steer * speed * 0.12 * dt, -3.0, 3.0)
 	truck.position.z -= speed * dt
@@ -247,6 +338,71 @@ func _process(dt: float) -> void:
 	for t in tiles:
 		if t.position.z > truck.position.z + 60.0:
 			t.position.z -= TILE * NT
-	cam.position = truck.position + Vector3(truck.position.x * -0.4, 4.6, 17.0)
-	cam.look_at(truck.position + Vector3(0, 2.2, -8.0))
-	lbl.text = "%d km/h" % int(speed * 3.6)
+	if camview == 0:
+		cam.position = truck.position + Vector3(truck.position.x * -0.4 + 7.5, 4.2, 15.0)
+		cam.look_at(truck.position + Vector3(0, 2.0, -6.0))
+		cam.fov = 62
+	elif camview == 1:
+		cam.position = truck.position + Vector3(truck.position.x * -0.4, 4.6, 17.0)
+		cam.look_at(truck.position + Vector3(0, 2.2, -8.0))
+		cam.fov = 62
+	else:
+		cam.position = truck.position + cab_pos
+		cam.rotation = Vector3(0, 0, 0)
+		cam.rotation.y = -steer * 0.05
+		cam.fov = 75
+	truck.visible = true
+	if wheel_ui:
+		wheel_ui.queue_redraw()
+	if dial:
+		dial.queue_redraw()
+	lbl.text = ""
+
+class WheelCtl extends Control:
+	var main
+	var down := false
+	var ang := 0.0
+	func _gui_input(e) -> void:
+		if e is InputEventScreenTouch or e is InputEventMouseButton:
+			down = e.pressed
+			if down:
+				_set(e.position)
+			else:
+				main.wsteer = 0.0
+		elif (e is InputEventScreenDrag or e is InputEventMouseMotion) and down:
+			_set(e.position)
+	func _set(p: Vector2) -> void:
+		var c := size / 2.0
+		main.wsteer = clampf((p.x - c.x) / (size.x * 0.35), -1.0, 1.0)
+	func _draw() -> void:
+		var c := size / 2.0
+		var r := size.x * 0.46
+		ang = lerp(ang, main.steer * 1.6, 0.3)
+		draw_set_transform(c, ang, Vector2.ONE)
+		draw_arc(Vector2.ZERO, r, 0, TAU, 48, Color(0.08, 0.08, 0.09, 0.8), 22.0, true)
+		draw_arc(Vector2.ZERO, r + 10, 0, TAU, 48, Color(0.5, 0.5, 0.52, 0.5), 2.0, true)
+		draw_line(Vector2.ZERO, Vector2(-r, r * 0.3), Color(0.08, 0.08, 0.09, 0.85), 14.0)
+		draw_line(Vector2.ZERO, Vector2(r, r * 0.3), Color(0.08, 0.08, 0.09, 0.85), 14.0)
+		draw_line(Vector2.ZERO, Vector2(0, r), Color(0.08, 0.08, 0.09, 0.85), 14.0)
+		draw_circle(Vector2.ZERO, r * 0.2, Color(0.16, 0.16, 0.18, 0.95))
+		draw_rect(Rect2(-8, -r - 10, 16, 20), Color(0.95, 0.78, 0.1))
+
+class DialCtl extends Control:
+	var main
+	func _draw() -> void:
+		var c := Vector2(size.x / 2.0, size.y - 20.0)
+		var r := 130.0
+		draw_circle(c, r + 8, Color(0.05, 0.05, 0.06, 0.85))
+		draw_arc(c, r, PI * 0.95, PI * 2.05, 40, Color(0.3, 0.3, 0.33), 4.0, true)
+		for i in range(0, 11):
+			var a := PI * 0.95 + (PI * 1.1) * i / 10.0
+			var d := Vector2(cos(a), sin(a))
+			draw_line(c + d * (r - 16), c + d * r, Color(0.9, 0.9, 0.9), 3.0)
+		var kmh: float = main.speed * 3.6
+		var a2 := PI * 0.95 + (PI * 1.1) * clampf(kmh / 140.0, 0.0, 1.0)
+		var d2 := Vector2(cos(a2), sin(a2))
+		draw_line(c, c + d2 * (r - 12), Color(1.0, 0.25, 0.15), 4.0)
+		draw_circle(c, 9, Color(0.2, 0.2, 0.22))
+		var f := ThemeDB.fallback_font
+		draw_string(f, c + Vector2(-45, -45), "%d" % int(kmh), HORIZONTAL_ALIGNMENT_CENTER, 90, 40, Color.WHITE)
+		draw_string(f, c + Vector2(-30, -22), "km/h", HORIZONTAL_ALIGNMENT_CENTER, 60, 16, Color(0.7, 0.8, 0.9))
