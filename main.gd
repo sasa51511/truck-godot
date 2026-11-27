@@ -330,8 +330,10 @@ var demo_t0 := -1
 var demo_n := 0
 func _demo() -> void:
 	var mn := OS.get_model_name().to_lower()
-	if not (mn.contains("sdk") or mn.contains("emulator")):
+	if not (mn.contains("sdk") or mn.contains("emulator") or OS.has_feature("x86_64")):
 		return
+	if demo_t0 < 0:
+		print("DEMO start model=", mn)
 	if demo_t0 < 0:
 		demo_t0 = Time.get_ticks_msec()
 	var t := (Time.get_ticks_msec() - demo_t0) / 1000.0
@@ -344,7 +346,8 @@ func _demo() -> void:
 			wsteer = p[2]
 			if demo_n >= 1:
 				var img := get_viewport().get_texture().get_image()
-				img.save_png("user://s%d.png" % demo_n)
+				var er := img.save_png("user://s%d.png" % demo_n)
+				print("DEMO saved ", demo_n, " err=", er, " ", OS.get_user_data_dir())
 			demo_n += 1
 	elif demo_n == plan.size() and t > 40.0:
 		var img2 := get_viewport().get_texture().get_image()
