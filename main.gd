@@ -236,7 +236,7 @@ func _set(k: String, v: bool) -> void:
 		"r": kr = v
 
 func _process(dt: float) -> void:
-		if gas: speed = min(speed + 10.0 * dt, 28.0)
+	if gas: speed = min(speed + 10.0 * dt, 28.0)
 	elif brake: speed = max(speed - 25.0 * dt, 0.0)
 	else: speed = max(speed - 4.0 * dt, 0.0)
 	var s := (1.0 if kr else 0.0) - (1.0 if kl else 0.0)
