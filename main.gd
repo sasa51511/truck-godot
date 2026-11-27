@@ -175,7 +175,8 @@ func _ready() -> void:
 		truck.add_child(m)
 		var ab := _aabb(m, Transform3D.IDENTITY)
 		print("TRUCK AABB ", ab)
-		cab_pos = Vector3(ab.position.x + ab.size.x * 0.5 - 0.55, 2.55, ab.position.z + 3.4)
+		_find_glass(m)
+		cab_pos = Vector3(ab.position.x + ab.size.x * 0.5 - 0.5, 2.35, ab.position.z + 2.9)
 	cam = Camera3D.new()
 	cam.fov = 62
 	cam.far = 500
@@ -207,6 +208,20 @@ func _ready() -> void:
 	ui.add_child(cb)
 	_btn(ui, "BRAKE", Vector2(920, 570), "brake")
 	_btn(ui, "GAS", Vector2(1090, 560), "gas")
+
+var glass_nodes: Array = []
+func _find_glass(n: Node) -> void:
+	if n is MeshInstance3D:
+		var mi := n as MeshInstance3D
+		for i in range(mi.mesh.get_surface_count()):
+			var mt := mi.mesh.surface_get_material(i)
+			if mt == null and mi.get_surface_override_material(i):
+				mt = mi.get_surface_override_material(i)
+			if mt and String(mt.resource_name).to_lower().contains("glass"):
+				glass_nodes.append(mi)
+				print("GLASS ", mi.name)
+	for c in n.get_children():
+		_find_glass(c)
 
 func _aabb(n: Node, xf: Transform3D) -> AABB:
 	var res := AABB()
@@ -377,10 +392,10 @@ func _process(dt: float) -> void:
 		cam.fov = 62
 	else:
 		cam.position = truck.position + cab_pos
-		cam.rotation = Vector3(0, 0, 0)
-		cam.rotation.y = -steer * 0.05
+		cam.rotation = Vector3(-0.05, -steer * 0.05, 0)
 		cam.fov = 75
-	truck.visible = true
+	for gn in glass_nodes:
+		gn.visible = camview != 2
 	if wheel_ui:
 		wheel_ui.queue_redraw()
 	if dial:
