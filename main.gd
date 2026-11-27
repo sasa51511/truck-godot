@@ -176,11 +176,57 @@ func _ready() -> void:
 		var ab := _aabb(m, Transform3D.IDENTITY)
 		print("TRUCK AABB ", ab)
 		_find_glass(m)
+		_names(m, 0)
 		cab_pos = Vector3(ab.position.x + ab.size.x * 0.5 - 0.5, 2.35, ab.position.z + 2.9)
+	_engine_setup()
 	cam = Camera3D.new()
 	cam.fov = 62
 	cam.far = 500
 	add_child(cam)
+	dash = Node3D.new()
+	cam.add_child(dash)
+	var dm := StandardMaterial3D.new()
+	dm.albedo_color = Color(0.07, 0.07, 0.08)
+	dm.roughness = 0.6
+	var top := MeshInstance3D.new()
+	var tb := BoxMesh.new()
+	tb.size = Vector3(2.6, 0.5, 0.9)
+	top.mesh = tb
+	top.material_override = dm
+	top.position = Vector3(0, -0.78, -1.05)
+	top.rotation.x = 0.25
+	dash.add_child(top)
+	for sx in [-1, 1]:
+		var mr := MeshInstance3D.new()
+		var mb := BoxMesh.new()
+		mb.size = Vector3(0.32, 0.5, 0.04)
+		mr.mesh = mb
+		var mm2 := StandardMaterial3D.new()
+		mm2.albedo_color = Color(0.45, 0.55, 0.65)
+		mm2.metallic = 1.0
+		mm2.roughness = 0.1
+		mr.material_override = mm2
+		mr.position = Vector3(sx * 1.25, -0.05, -1.0)
+		mr.rotation.y = -sx * 0.45
+		dash.add_child(mr)
+		var frm := MeshInstance3D.new()
+		var fb := BoxMesh.new()
+		fb.size = Vector3(0.37, 0.55, 0.03)
+		frm.mesh = fb
+		frm.material_override = dm
+		frm.position = mr.position + Vector3(0, 0, 0.03)
+		frm.rotation.y = mr.rotation.y
+		dash.add_child(frm)
+	var sw := MeshInstance3D.new()
+	var tm := TorusMesh.new()
+	tm.inner_radius = 0.17
+	tm.outer_radius = 0.23
+	sw.mesh = tm
+	sw.material_override = dm
+	sw.position = Vector3(-0.3, -0.62, -0.85)
+	sw.rotation.x = 1.0
+	dash.add_child(sw)
+	dash.visible = false
 	var ui := CanvasLayer.new()
 	add_child(ui)
 	lbl = Label.new()
@@ -210,6 +256,42 @@ func _ready() -> void:
 	_btn(ui, "GAS", Vector2(1090, 560), "gas")
 
 var glass_nodes: Array = []
+var eng_play: AudioStreamGeneratorPlayback
+var eng_ph := 0.0
+var eng_ph2 := 0.0
+var eng_noise := 0.0
+var dash: Node3D
+func _names(n: Node, d: int) -> void:
+	if n is MeshInstance3D:
+		var a: AABB = (n as MeshInstance3D).get_aabb()
+		print("MESH ", n.name, " pos=", (n as Node3D).global_position, " sz=", a.size)
+	for c in n.get_children():
+		_names(c, d + 1)
+func _engine_setup() -> void:
+	var p := AudioStreamPlayer.new()
+	var gen := AudioStreamGenerator.new()
+	gen.mix_rate = 22050.0
+	gen.buffer_length = 0.25
+	p.stream = gen
+	p.volume_db = -4.0
+	add_child(p)
+	p.play()
+	eng_play = p.get_stream_playback()
+func _engine_fill() -> void:
+	if eng_play == null:
+		return
+	var n := eng_play.get_frames_available()
+	var rpm := 700.0 + clampf(speed / 28.0, 0.0, 1.0) * 1500.0 + (350.0 if gas else 0.0)
+	var f := rpm / 60.0 * 2.0
+	for i in range(n):
+		eng_ph += f / 22050.0
+		eng_ph2 += (f * 0.5) / 22050.0
+		eng_noise = lerp(eng_noise, randf() * 2.0 - 1.0, 0.25)
+		var s := sin(eng_ph * TAU) * 0.45 + sin(eng_ph * 2.0 * TAU) * 0.25 + sin(eng_ph2 * TAU) * 0.35 + signf(sin(eng_ph * 0.5 * TAU)) * 0.08 + eng_noise * (0.1 + (0.1 if gas else 0.0))
+		var amp := 0.28 + (0.18 if gas else 0.0)
+		var v := Vector2(s * amp, s * amp)
+		eng_play.push_frame(v)
+
 func _find_glass(n: Node) -> void:
 	if n is MeshInstance3D:
 		var mi := n as MeshInstance3D
@@ -371,6 +453,7 @@ func _demo() -> void:
 
 func _process(dt: float) -> void:
 	_demo()
+	_engine_fill()
 	if gas: speed = min(speed + 10.0 * dt, 28.0)
 	elif brake: speed = max(speed - 25.0 * dt, 0.0)
 	else: speed = max(speed - 4.0 * dt, 0.0)
@@ -394,6 +477,7 @@ func _process(dt: float) -> void:
 		cam.position = truck.position + cab_pos
 		cam.rotation = Vector3(-0.05, -steer * 0.05, 0)
 		cam.fov = 75
+	dash.visible = camview == 2
 	for gn in glass_nodes:
 		gn.visible = camview != 2
 	if wheel_ui:
