@@ -323,20 +323,22 @@ func _ready() -> void:
 	gate.add_child(gt)
 	gate.visible = false
 	hud = Label.new()
-	hud.position = Vector2(24, 14)
-	hud.add_theme_font_size_override("font_size", 22)
+	hud.position = Vector2(1000, 150)
+	hud.custom_minimum_size = Vector2(250, 0)
+	hud.add_theme_stylebox_override("normal", _sbox(Color(0.05, 0.07, 0.1, 0.75), Color(0.3, 0.9, 0.4), 6))
+	hud.add_theme_font_size_override("font_size", 20)
 	hud.add_theme_color_override("font_outline_color", Color(0, 0, 0))
 	hud.add_theme_constant_override("outline_size", 6)
 	ui.add_child(hud)
 	toast_lbl = Label.new()
-	toast_lbl.position = Vector2(340, 90)
+	toast_lbl.position = Vector2(300, 600)
 	toast_lbl.add_theme_font_size_override("font_size", 34)
 	toast_lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0))
 	toast_lbl.add_theme_constant_override("outline_size", 8)
 	ui.add_child(toast_lbl)
 	menu_root = PanelContainer.new()
-	menu_root.position = Vector2(300, 40)
-	menu_root.size = Vector2(680, 640)
+	menu_root.position = Vector2(60, 40)
+	menu_root.size = Vector2(1160, 640)
 	menu_root.mouse_filter = Control.MOUSE_FILTER_STOP
 	menu_box = VBoxContainer.new()
 	menu_box.add_theme_constant_override("separation", 10)
@@ -365,20 +367,54 @@ func _ready() -> void:
 	ui.add_child(wheel_ui)
 	dial = DialCtl.new()
 	dial.main = self
-	dial.position = Vector2(480, 520)
+	dial.position = Vector2(780, 520)
 	dial.size = Vector2(320, 200)
 	dial.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(dial)
-	var cb := Button.new()
-	cb.text = "CAM"
-	cb.position = Vector2(1100, 20)
-	cb.custom_minimum_size = Vector2(150, 80)
-	cb.add_theme_font_size_override("font_size", 30)
-	cb.modulate = Color(1, 1, 1, 0.75)
-	cb.pressed.connect(func(): camview = (camview + 1) % 3)
-	ui.add_child(cb)
-	_btn(ui, "BRAKE", Vector2(920, 570), "brake")
-	_btn(ui, "GAS", Vector2(1090, 560), "gas")
+	var pb1 := PedalCtl.new()
+	pb1.main = self
+	pb1.key = "brake"
+	pb1.position = Vector2(1060, 540)
+	pb1.size = Vector2(90, 150)
+	ui.add_child(pb1)
+	var pb2 := PedalCtl.new()
+	pb2.main = self
+	pb2.key = "gas"
+	pb2.position = Vector2(1165, 500)
+	pb2.size = Vector2(90, 190)
+	ui.add_child(pb2)
+	var pill := PanelContainer.new()
+	pill.position = Vector2(840, 14)
+	pill.add_theme_stylebox_override("panel", _sbox(Color(0.05, 0.07, 0.1, 0.8), Color(0.3, 0.85, 0.35), 0))
+	money_lbl = _lbl("", 26, Color.WHITE)
+	pill.add_child(money_lbl)
+	ui.add_child(pill)
+	var ik := 0
+	for kind in ["gear", "camera", "pause"]:
+		var ib := MenuBtn.new()
+		ib.main = self
+		ib.kind = kind
+		ib.rnd = true
+		ib.position = Vector2(1000 + ik * 70, 8)
+		ib.size = Vector2(58, 58)
+		ui.add_child(ib)
+		ik += 1
+	var mn := MiniCtl.new()
+	mn.main = self
+	mn.position = Vector2(1120, 8)
+	mn.size = Vector2(140, 140)
+	mn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mn.position = Vector2(1130, 74)
+	ui.add_child(mn)
+	var items := [["jobs", "Jobs"], ["garage", "Garage"], ["house", "House"], ["company", "Company"], ["shop", "Shop"]]
+	for i in range(items.size()):
+		var mb := MenuBtn.new()
+		mb.main = self
+		mb.kind = items[i][0]
+		mb.text = items[i][1]
+		mb.position = Vector2(14, 120 + i * 58)
+		mb.size = Vector2(190, 50)
+		ui.add_child(mb)
 
 var glass_nodes: Array = []
 var hide_nodes: Array = []
@@ -482,38 +518,91 @@ func _open_menu(msg: String) -> void:
 	menu_root.visible = true
 	_save()
 
+var sel := 0
+var money_lbl: Label
+func _lbl(txt: String, sz: int, col: Color) -> Label:
+	var l := Label.new()
+	l.text = txt
+	l.add_theme_font_size_override("font_size", sz)
+	l.add_theme_color_override("font_color", col)
+	return l
+
 func _build_menu() -> void:
 	for c in menu_box.get_children():
 		c.queue_free()
-	var t := Label.new()
-	t.text = "%s" % CITIES[city][0].to_upper()
-	t.add_theme_font_size_override("font_size", 44)
-	t.add_theme_color_override("font_color", Color(0.98, 0.7, 0.2))
-	menu_box.add_child(t)
-	var t2 := Label.new()
-	t2.text = menu_msg
-	t2.add_theme_font_size_override("font_size", 22)
-	t2.add_theme_color_override("font_color", Color(0.75, 0.8, 0.88))
-	t2.autowrap_mode = TextServer.AUTOWRAP_WORD
-	t2.custom_minimum_size = Vector2(620, 0)
-	menu_box.add_child(t2)
-	t = Label.new()
-	t.text = ""
-	t.add_theme_font_size_override("font_size", 4)
-	t.autowrap_mode = TextServer.AUTOWRAP_WORD
-	t.custom_minimum_size = Vector2(620, 0)
-	menu_box.add_child(t)
-	var s := Label.new()
-	s.text = "EGP %d      Fuel %d%%      Jobs done %d" % [money, int(fuel), jobs_done]
-	s.add_theme_font_size_override("font_size", 24)
-	s.add_theme_color_override("font_color", Color(0.55, 0.9, 0.6))
-	menu_box.add_child(s)
+	sel = clampi(sel, 0, maxi(0, offers.size() - 1))
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 24)
+	top.add_child(_lbl(CITIES[city][0].to_upper(), 40, Color(0.98, 0.7, 0.2)))
+	var msgl := _lbl(menu_msg, 20, Color(0.75, 0.8, 0.88))
+	msgl.autowrap_mode = TextServer.AUTOWRAP_WORD
+	msgl.custom_minimum_size = Vector2(560, 0)
+	msgl.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(msgl)
+	menu_box.add_child(top)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	menu_box.add_child(row)
+	var left := VBoxContainer.new()
+	left.add_theme_constant_override("separation", 10)
+	row.add_child(left)
+	var mp := MapCtl.new()
+	mp.main = self
+	mp.custom_minimum_size = Vector2(600, 300)
+	left.add_child(mp)
+	var tabs := HBoxContainer.new()
+	tabs.add_theme_constant_override("separation", 8)
+	left.add_child(tabs)
 	for i in range(offers.size()):
 		var o: Dictionary = offers[i]
 		var ii := i
-		_mk_btn("%s  >  %s\n%s  %dt   %.1f km   %d EGP   %ds" % [CITIES[city][0], CITIES[o["to"]][0], o["cargo"], o["tons"], o["d"] / 1000.0, o["pay"], o["t"]], func(): _start_job(ii))
+		var b := Button.new()
+		b.text = "%s\n%d EGP" % [CITIES[o["to"]][0], o["pay"]]
+		b.custom_minimum_size = Vector2(190, 74)
+		b.add_theme_font_size_override("font_size", 22)
+		var on := (i == sel)
+		b.add_theme_stylebox_override("normal", _sbox(Color(0.2, 0.3, 0.45, 0.95) if on else Color(0.12, 0.14, 0.18, 0.95), Color(0.3, 0.8, 0.4) if on else Color(0.3, 0.32, 0.38), 6))
+		b.add_theme_stylebox_override("hover", _sbox(Color(0.2, 0.3, 0.45, 0.95), Color(0.3, 0.8, 0.4), 6))
+		b.add_theme_stylebox_override("pressed", _sbox(Color(0.3, 0.45, 0.65, 0.95), Color(1, 1, 1), 6))
+		b.pressed.connect(func(): sel = ii; _build_menu())
+		tabs.add_child(b)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(380, 0)
+	var cs := _sbox(Color(0.08, 0.1, 0.14, 0.95), Color(0.3, 0.32, 0.4), 2)
+	cs.set_corner_radius_all(16)
+	card.add_theme_stylebox_override("panel", cs)
+	row.add_child(card)
+	var cv := VBoxContainer.new()
+	cv.add_theme_constant_override("separation", 8)
+	card.add_child(cv)
+	cv.add_child(_lbl("Cargo Details", 26, Color(0.9, 0.93, 1.0)))
+	if offers.size() > 0:
+		var o2: Dictionary = offers[sel]
+		cv.add_child(_lbl("%s (%d Tons)" % [o2["cargo"], o2["tons"]], 24, Color(1.0, 0.85, 0.5)))
+		cv.add_child(_lbl("From: %s" % CITIES[city][0], 22, Color(0.8, 0.85, 0.92)))
+		cv.add_child(_lbl("To: %s" % CITIES[o2["to"]][0], 22, Color(0.8, 0.85, 0.92)))
+		cv.add_child(_lbl("Distance: %.1f km   Time: %ds" % [o2["d"] / 1000.0, o2["t"]], 20, Color(0.7, 0.75, 0.85)))
+		cv.add_child(_lbl("Reward:", 22, Color(0.8, 0.85, 0.92)))
+		cv.add_child(_lbl("EGP %d" % o2["pay"], 40, Color(0.5, 0.95, 0.35)))
+	var acc := Button.new()
+	acc.text = "Accept Job"
+	acc.custom_minimum_size = Vector2(340, 70)
+	acc.add_theme_font_size_override("font_size", 30)
+	acc.add_theme_stylebox_override("normal", _sbox(Color(0.15, 0.62, 0.2), Color(0.5, 0.95, 0.4), 0))
+	acc.add_theme_stylebox_override("hover", _sbox(Color(0.2, 0.72, 0.25), Color(0.5, 0.95, 0.4), 0))
+	acc.add_theme_stylebox_override("pressed", _sbox(Color(0.1, 0.45, 0.14), Color(1, 1, 1), 0))
+	acc.pressed.connect(func(): _start_job(sel))
+	cv.add_child(acc)
 	var need := int(ceil((100.0 - fuel) * 3.0))
-	_mk_btn("Refuel (%d)" % need, func(): _refuel())
+	var rf := Button.new()
+	rf.text = "Refuel (%d EGP)" % need
+	rf.custom_minimum_size = Vector2(340, 52)
+	rf.add_theme_font_size_override("font_size", 22)
+	rf.add_theme_stylebox_override("normal", _sbox(Color(0.14, 0.16, 0.2), Color(0.98, 0.62, 0.1), 6))
+	rf.pressed.connect(func(): _refuel())
+	cv.add_child(rf)
+	var st := _lbl("EGP %d    Fuel %d%%    Jobs %d" % [money, int(fuel), jobs_done], 20, Color(0.55, 0.9, 0.6))
+	cv.add_child(st)
 
 func _refuel() -> void:
 	var need := int(ceil((100.0 - fuel) * 3.0))
@@ -540,12 +629,14 @@ func _toast(t: String) -> void:
 	toast_t = 3.5
 
 func _game_tick(dt: float) -> void:
+	if money_lbl:
+		money_lbl.text = "  EGP %d  +" % money
 	if not job.is_empty():
 		var travelled: float = z0 - truck.position.z
 		var rem: float = float(job["d"]) - travelled
 		tleft -= dt
 		fuel = maxf(0.0, fuel - speed * dt * 0.0045 * (1.0 + float(job["tons"]) / 60.0))
-		hud.text = "%d EGP   Fuel %d%%\n%s %dt > %s\n%dm   %ds" % [money, int(fuel), job["cargo"], job["tons"], CITIES[job["to"]][0], maxi(0, int(rem)), maxi(0, int(tleft))]
+		hud.text = "%s > %s\n%.1f km   %ds\nFuel %d%%" % [CITIES[city][0], CITIES[job["to"]][0], maxf(0.0, rem) / 1000.0, maxi(0, int(tleft)), int(fuel)]
 		if rem <= 6.0:
 			var late := tleft < 0.0
 			var pay: int = int(job["pay"]) / (2 if late else 1)
@@ -560,7 +651,7 @@ func _game_tick(dt: float) -> void:
 			fuel = 20.0
 			_open_menu("Out of fuel. Tow fee %d EGP." % fee)
 	else:
-		hud.text = "%d EGP   Fuel %d%%" % [money, int(fuel)]
+		hud.text = "No active job\nFuel %d%%" % int(fuel)
 	if toast_t > 0.0:
 		toast_t -= dt
 		toast_lbl.modulate.a = clampf(toast_t, 0.0, 1.0)
@@ -854,3 +945,133 @@ class DialCtl extends Control:
 		var f := ThemeDB.fallback_font
 		draw_string(f, c + Vector2(-45, -45), "%d" % int(kmh), HORIZONTAL_ALIGNMENT_CENTER, 90, 40, Color.WHITE)
 		draw_string(f, c + Vector2(-30, -22), "km/h", HORIZONTAL_ALIGNMENT_CENTER, 60, 16, Color(0.7, 0.8, 0.9))
+
+class PedalCtl extends Control:
+	var main
+	var key := "gas"
+	var down := false
+	func _gui_input(e) -> void:
+		if e is InputEventScreenTouch or e is InputEventMouseButton:
+			down = e.pressed
+			main.set(key, down)
+			queue_redraw()
+	func _draw() -> void:
+		var col := Color(0.55, 0.57, 0.6, 0.95) if not down else Color(0.9, 0.5, 0.2, 0.95)
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = col
+		sb.set_corner_radius_all(14)
+		draw_style_box(sb, Rect2(Vector2.ZERO, size))
+		var n := 8 if key == "gas" else 6
+		for i in range(n):
+			var y := 14.0 + i * (size.y - 28.0) / float(n)
+			draw_line(Vector2(14, y), Vector2(size.x - 14, y), Color(0.15, 0.15, 0.17, 0.9), 4.0)
+
+class MenuBtn extends Control:
+	var main
+	var kind := "jobs"
+	var text := ""
+	var rnd := false
+	func _gui_input(e) -> void:
+		if (e is InputEventScreenTouch or e is InputEventMouseButton) and e.pressed:
+			match kind:
+				"camera":
+					main.camview = (main.camview + 1) % 3
+				"pause":
+					if main.menu_open:
+						return
+					main._toast("Finish or cancel your job to open the menu")
+				"jobs":
+					if main.job.is_empty() and not main.menu_open:
+						main._open_menu("Pick a load.")
+					elif not main.menu_open:
+						main._toast("Finish your current job first")
+				_:
+					main._toast("%s: coming soon" % kind.capitalize())
+	func _draw() -> void:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.05, 0.07, 0.1, 0.78)
+		sb.set_corner_radius_all(int(size.y / 2.0) if rnd else 12)
+		draw_style_box(sb, Rect2(Vector2.ZERO, size))
+		var c := Vector2(26, size.y / 2.0) if not rnd else size / 2.0
+		var w := Color(0.92, 0.95, 1.0)
+		match kind:
+			"jobs":
+				draw_rect(Rect2(c + Vector2(-12, -8), Vector2(24, 18)), w, false, 2.5)
+				draw_rect(Rect2(c + Vector2(-5, -13), Vector2(10, 5)), w, false, 2.5)
+			"garage":
+				draw_polyline(PackedVector2Array([c + Vector2(-13, 10), c + Vector2(-13, -4), c + Vector2(0, -12), c + Vector2(13, -4), c + Vector2(13, 10)]), w, 2.5)
+				draw_rect(Rect2(c + Vector2(-7, 0), Vector2(14, 10)), w, false, 2.5)
+			"house":
+				draw_polyline(PackedVector2Array([c + Vector2(-12, 4), c + Vector2(0, -10), c + Vector2(12, 4)]), w, 2.5)
+				draw_rect(Rect2(c + Vector2(-8, 4), Vector2(16, 8)), w, false, 2.5)
+			"company":
+				draw_rect(Rect2(c + Vector2(-9, -12), Vector2(18, 24)), w, false, 2.5)
+				for yy in range(3):
+					draw_line(c + Vector2(-4, -6 + yy * 7), c + Vector2(4, -6 + yy * 7), w, 2.0)
+			"shop":
+				draw_polyline(PackedVector2Array([c + Vector2(-13, -10), c + Vector2(-8, -10), c + Vector2(-5, 6), c + Vector2(9, 6), c + Vector2(11, -4), c + Vector2(-7, -4)]), w, 2.5)
+				draw_circle(c + Vector2(-3, 11), 2.5, w)
+				draw_circle(c + Vector2(7, 11), 2.5, w)
+			"gear":
+				draw_arc(c, 10, 0, TAU, 24, w, 3.0)
+				for k in range(8):
+					var a := k * TAU / 8.0
+					draw_line(c + Vector2(cos(a), sin(a)) * 10, c + Vector2(cos(a), sin(a)) * 15, w, 4.0)
+			"camera":
+				draw_rect(Rect2(c + Vector2(-14, -8), Vector2(28, 18)), w, false, 2.5)
+				draw_circle(c + Vector2(0, 1), 5, w)
+			"pause":
+				draw_rect(Rect2(c + Vector2(-8, -10), Vector2(6, 20)), w)
+				draw_rect(Rect2(c + Vector2(3, -10), Vector2(6, 20)), w)
+		if text != "":
+			draw_string(ThemeDB.fallback_font, Vector2(54, size.y / 2.0 + 8), text, HORIZONTAL_ALIGNMENT_LEFT, 130, 24, Color(0.95, 0.97, 1.0))
+
+class MiniCtl extends Control:
+	var main
+	func _draw() -> void:
+		var c := size / 2.0
+		var r := size.x / 2.0 - 2.0
+		draw_circle(c, r, Color(0.08, 0.12, 0.1, 0.9))
+		draw_arc(c, r, 0, TAU, 40, Color(0.9, 0.93, 0.95), 3.0)
+		draw_line(c + Vector2(0, r - 4), c + Vector2(0, -r + 6), Color(0.35, 0.37, 0.4), 12.0)
+		if not main.job.is_empty():
+			var pts := PackedVector2Array([c + Vector2(0, 14), c + Vector2(0, -8), c + Vector2(14, -26), c + Vector2(22, -r + 10)])
+			draw_polyline(pts, Color(1.0, 0.82, 0.1), 5.0)
+		draw_colored_polygon(PackedVector2Array([c + Vector2(0, 2), c + Vector2(9, 22), c + Vector2(-9, 22)]), Color(1.0, 0.25, 0.2))
+
+class MapCtl extends Control:
+	var main
+	const OUT := [[25.0, 31.6], [29.0, 30.9], [31.0, 31.6], [32.3, 31.3], [34.2, 31.3], [34.9, 29.5], [34.3, 27.8], [33.2, 28.0], [33.5, 27.0], [35.5, 23.9], [36.9, 22.0], [25.0, 22.0]]
+	func _p(lat: float, lon: float) -> Vector2:
+		return Vector2((lon - 24.5) / 12.8 * size.x, (32.0 - lat) / 10.2 * size.y)
+	func _draw() -> void:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.1, 0.2, 0.32)
+		sb.set_corner_radius_all(14)
+		draw_style_box(sb, Rect2(Vector2.ZERO, size))
+		var poly := PackedVector2Array()
+		for q in OUT:
+			poly.append(_p(q[1], q[0]))
+		var tris := Geometry2D.triangulate_polygon(poly)
+		if tris.size() > 0:
+			draw_colored_polygon(poly, Color(0.62, 0.52, 0.34))
+		var nile := [[31.24, 30.04], [31.2, 29.0], [30.8, 28.1], [31.18, 27.18], [31.7, 26.56], [32.72, 26.16], [32.64, 25.69], [32.9, 24.09]]
+		var np := PackedVector2Array()
+		for q in nile:
+			np.append(_p(q[1], q[0]))
+		draw_polyline(np, Color(0.2, 0.5, 0.75), 4.0)
+		for i in range(CITIES.size()):
+			var pp := _p(CITIES[i][1], CITIES[i][2])
+			draw_circle(pp, 6.0 if i == main.city else 4.0, Color(1.0, 0.85, 0.2) if i == main.city else Color(0.9, 0.9, 0.9))
+			draw_string(ThemeDB.fallback_font, pp + Vector2(8, 4), CITIES[i][0], HORIZONTAL_ALIGNMENT_LEFT, 120, 17, Color.WHITE)
+		if main.offers.size() > 0:
+			var o: Dictionary = main.offers[main.sel]
+			var a := _p(CITIES[main.city][1], CITIES[main.city][2])
+			var b := _p(CITIES[o["to"]][1], CITIES[o["to"]][2])
+			var mid := (a + b) / 2.0 + Vector2(-26, 0)
+			var rp := PackedVector2Array()
+			for k in range(21):
+				var tt := k / 20.0
+				rp.append(a.lerp(mid, tt).lerp(mid.lerp(b, tt), tt))
+			draw_polyline(rp, Color(1.0, 0.85, 0.1), 5.0)
+			draw_circle(b, 8.0, Color(0.3, 0.9, 0.35))
