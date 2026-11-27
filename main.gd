@@ -211,7 +211,11 @@ func _ready() -> void:
 		mb.size = Vector3(0.32, 0.5, 0.04)
 		mr.mesh = mb
 		var mm2 := StandardMaterial3D.new()
-		mm2.albedo_texture = vtex
+		var im := Image.create(8, 16, false, Image.FORMAT_RGB8)
+		for yy in range(16):
+			for xx in range(8):
+				im.set_pixel(xx, yy, Color(0.62, 0.74, 0.88).lerp(Color(0.2, 0.28, 0.2), clampf((yy - 6) / 4.0, 0.0, 1.0)) if yy < 11 else Color(0.22, 0.22, 0.24))
+		mm2.albedo_texture = ImageTexture.create_from_image(im)
 		mm2.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		mm2.uv1_scale = Vector3(-1, 1, 1)
 		mm2.uv1_offset = Vector3(1, 0, 0)
@@ -266,6 +270,7 @@ func _ready() -> void:
 	_btn(ui, "GAS", Vector2(1090, 560), "gas")
 
 var glass_nodes: Array = []
+var hide_nodes: Array = []
 var eng_play: AudioStreamGeneratorPlayback
 var eng_ph := 0.0
 var eng_ph2 := 0.0
@@ -304,6 +309,8 @@ func _engine_fill() -> void:
 		eng_play.push_frame(v)
 
 func _find_glass(n: Node) -> void:
+	if n is MeshInstance3D and (n.name == "door_L_mesh" or n.name == "door_R_mesh"):
+		hide_nodes.append(n)
 	if n is MeshInstance3D:
 		var mi := n as MeshInstance3D
 		for i in range(mi.mesh.get_surface_count()):
@@ -489,6 +496,8 @@ func _process(dt: float) -> void:
 		cam.rotation = Vector3(-0.05, -steer * 0.05, 0)
 		cam.fov = 75
 	dash.visible = camview == 2
+	for hn in hide_nodes:
+		hn.visible = camview != 2
 	rcam.position = truck.position + Vector3(2.0 if camview == 2 else 0.0, 3.0, -4.0)
 	rcam.look_at(truck.position + Vector3(0, 2.0, 40.0))
 	for gn in glass_nodes:
