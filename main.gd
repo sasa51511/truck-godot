@@ -344,7 +344,7 @@ func _ready() -> void:
 	menu_box.add_theme_constant_override("separation", 10)
 	menu_root.add_child(menu_box)
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.04, 0.05, 0.07, 0.9)
+	sb.bg_color = Color(0.04, 0.05, 0.07, 0.97)
 	sb.border_color = Color(0.98, 0.62, 0.1)
 	sb.border_width_top = 5
 	sb.set_corner_radius_all(18)
@@ -353,7 +353,10 @@ func _ready() -> void:
 	sb.content_margin_top = 18
 	sb.content_margin_bottom = 18
 	menu_root.add_theme_stylebox_override("panel", sb)
-	ui.add_child(menu_root)
+	var ml := CanvasLayer.new()
+	ml.layer = 5
+	add_child(ml)
+	ml.add_child(menu_root)
 	_make_offers()
 	_build_menu()
 	lbl = Label.new()
