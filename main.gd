@@ -40,24 +40,24 @@ func _ready() -> void:
 	env.background_mode = Environment.BG_SKY
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = 0.9
+	env.ambient_light_energy = 0.7
 	env.tonemap_mode = Environment.TONE_MAPPER_ACES
 	env.tonemap_white = 6.0
 	env.fog_enabled = true
-	env.fog_light_color = Color(0.72, 0.8, 0.88)
-	env.fog_density = 0.0035
-	env.fog_sky_affect = 0.25
+	env.fog_light_color = Color(0.95, 0.72, 0.55)
+	env.fog_density = 0.0045
+	env.fog_sky_affect = 0.45
 	env.glow_enabled = true
 	env.glow_intensity = 0.4
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-38, -40, 0)
-	sun.light_color = Color(1.0, 0.95, 0.85)
-	sun.light_energy = 1.7
+	sun.rotation_degrees = Vector3(-11, -25, 0)
+	sun.light_color = Color(1.0, 0.6, 0.32)
+	sun.light_energy = 2.4
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 90.0
+	sun.directional_shadow_max_distance = 140.0
 	add_child(sun)
 
 	var road_m := StandardMaterial3D.new()
@@ -65,7 +65,8 @@ func _ready() -> void:
 	road_m.normal_enabled = true
 	road_m.normal_texture = _tex("res://assets/asphalt_n.jpg")
 	road_m.uv1_scale = Vector3(2.0, 10.0, 1.0)
-	road_m.roughness = 0.8
+	road_m.roughness = 0.38
+	road_m.metallic_specular = 0.9
 	var grass_m := StandardMaterial3D.new()
 	grass_m.albedo_texture = _tex("res://assets/grass_d.jpg")
 	grass_m.albedo_color = Color(0.75, 0.95, 0.6)
