@@ -185,7 +185,7 @@ func _ready() -> void:
 	add_child(cam)
 	var svp := SubViewport.new()
 	svp.size = Vector2i(256, 160)
-	svp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	svp.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	add_child(svp)
 	rcam = Camera3D.new()
 	rcam.fov = 55
@@ -243,6 +243,59 @@ func _ready() -> void:
 	dash.visible = false
 	var ui := CanvasLayer.new()
 	add_child(ui)
+	_load()
+	gate = Node3D.new()
+	add_child(gate)
+	var gm := StandardMaterial3D.new()
+	gm.albedo_color = Color(0.96, 0.7, 0.05)
+	gm.emission_enabled = true
+	gm.emission = Color(0.5, 0.3, 0.0)
+	for sx in [-1, 1]:
+		var gp := MeshInstance3D.new()
+		var gb := BoxMesh.new()
+		gb.size = Vector3(0.6, 9.0, 0.6)
+		gp.mesh = gb
+		gp.material_override = gm
+		gp.position = Vector3(sx * 6.5, 4.5, 0)
+		gate.add_child(gp)
+	var gt := MeshInstance3D.new()
+	var gtb := BoxMesh.new()
+	gtb.size = Vector3(14.0, 2.4, 0.5)
+	gt.mesh = gtb
+	gt.material_override = gm
+	gt.position = Vector3(0, 8.4, 0)
+	gate.add_child(gt)
+	gate.visible = false
+	hud = Label.new()
+	hud.position = Vector2(24, 14)
+	hud.add_theme_font_size_override("font_size", 22)
+	hud.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	hud.add_theme_constant_override("outline_size", 6)
+	ui.add_child(hud)
+	toast_lbl = Label.new()
+	toast_lbl.position = Vector2(340, 90)
+	toast_lbl.add_theme_font_size_override("font_size", 34)
+	toast_lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	toast_lbl.add_theme_constant_override("outline_size", 8)
+	ui.add_child(toast_lbl)
+	menu_root = PanelContainer.new()
+	menu_root.position = Vector2(300, 60)
+	menu_root.size = Vector2(680, 600)
+	menu_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	menu_box = VBoxContainer.new()
+	menu_box.add_theme_constant_override("separation", 10)
+	menu_root.add_child(menu_box)
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.05, 0.07, 0.1, 0.92)
+	sb.set_corner_radius_all(18)
+	sb.content_margin_left = 24
+	sb.content_margin_right = 24
+	sb.content_margin_top = 18
+	sb.content_margin_bottom = 18
+	menu_root.add_theme_stylebox_override("panel", sb)
+	ui.add_child(menu_root)
+	_make_offers()
+	_build_menu()
 	lbl = Label.new()
 	lbl.position = Vector2(30, 20)
 	lbl.add_theme_font_size_override("font_size", 28)
@@ -276,6 +329,155 @@ var eng_ph := 0.0
 var eng_ph2 := 0.0
 var eng_noise := 0.0
 var dash: Node3D
+const CITIES := [["Cairo", 30.04, 31.24], ["Alexandria", 31.20, 29.92], ["Tanta", 30.79, 31.00], ["Mansoura", 31.04, 31.38], ["Suez", 29.97, 32.55], ["Asyut", 27.18, 31.18], ["Luxor", 25.69, 32.64], ["Aswan", 24.09, 32.90]]
+const CARGO := ["Vegetables", "Cement", "Bricks", "Furniture", "Fruit", "Steel", "Fuel", "Flour", "Ceramics", "Electronics"]
+var money := 500
+var fuel := 100.0
+var city := 0
+var jobs_done := 0
+var job: Dictionary = {}
+var z0 := 0.0
+var tleft := 0.0
+var menu_open := true
+var menu_root: Control
+var menu_box: VBoxContainer
+var menu_msg := "Welcome, driver. Pick a load."
+var hud: Label
+var offers: Array = []
+var gate: Node3D
+var toast_t := 0.0
+var toast_lbl: Label
+
+func _km(a: int, b: int) -> float:
+	var la1: float = deg_to_rad(CITIES[a][1])
+	var la2: float = deg_to_rad(CITIES[b][1])
+	var dl: float = deg_to_rad(CITIES[b][2] - CITIES[a][2])
+	var dla: float = la2 - la1
+	var h: float = sin(dla / 2.0) * sin(dla / 2.0) + cos(la1) * cos(la2) * sin(dl / 2.0) * sin(dl / 2.0)
+	return 6371.0 * 2.0 * asin(sqrt(h))
+
+func _save() -> void:
+	var cf := ConfigFile.new()
+	cf.set_value("g", "money", money)
+	cf.set_value("g", "fuel", fuel)
+	cf.set_value("g", "city", city)
+	cf.set_value("g", "jobs", jobs_done)
+	cf.save("user://save.cfg")
+
+func _load() -> void:
+	var cf := ConfigFile.new()
+	if cf.load("user://save.cfg") == OK:
+		money = cf.get_value("g", "money", 500)
+		fuel = cf.get_value("g", "fuel", 100.0)
+		city = cf.get_value("g", "city", 0)
+		jobs_done = cf.get_value("g", "jobs", 0)
+
+func _make_offers() -> void:
+	offers.clear()
+	var idx: Array = []
+	for i in range(CITIES.size()):
+		if i != city:
+			idx.append(i)
+	idx.shuffle()
+	for q in range(3):
+		var ti: int = idx[q]
+		var km := _km(city, ti)
+		var d: int = int(clamp(round(km * 10.0 / 50.0) * 50.0, 1200.0, 6500.0))
+		var tons: int = randi_range(4, 24)
+		var pay: int = int(round(d / 5.0 * (0.45 + tons / 28.0) / 10.0) * 10.0) + randi_range(0, 4) * 10
+		offers.append({"to": ti, "d": d, "tons": tons, "pay": pay, "t": int(d / 19.0) + 25, "cargo": CARGO[randi() % CARGO.size()]})
+
+func _mk_btn(txt: String, cb: Callable) -> Button:
+	var b := Button.new()
+	b.text = txt
+	b.custom_minimum_size = Vector2(620, 70)
+	b.add_theme_font_size_override("font_size", 28)
+	b.pressed.connect(cb)
+	menu_box.add_child(b)
+	return b
+
+func _open_menu(msg: String) -> void:
+	menu_open = true
+	menu_msg = msg
+	job = {}
+	gate.visible = false
+	_make_offers()
+	_build_menu()
+	menu_root.visible = true
+	_save()
+
+func _build_menu() -> void:
+	for c in menu_box.get_children():
+		c.queue_free()
+	var t := Label.new()
+	t.text = "%s  |  %s" % [CITIES[city][0], menu_msg]
+	t.add_theme_font_size_override("font_size", 26)
+	t.autowrap_mode = TextServer.AUTOWRAP_WORD
+	t.custom_minimum_size = Vector2(620, 0)
+	menu_box.add_child(t)
+	var s := Label.new()
+	s.text = "Money %d   Fuel %d%%   Jobs %d" % [money, int(fuel), jobs_done]
+	s.add_theme_font_size_override("font_size", 24)
+	menu_box.add_child(s)
+	for i in range(offers.size()):
+		var o: Dictionary = offers[i]
+		var ii := i
+		_mk_btn("%s %dt to %s  %dm  %d EGP  %ds" % [o["cargo"], o["tons"], CITIES[o["to"]][0], o["d"], o["pay"], o["t"]], func(): _start_job(ii))
+	var need := int(ceil((100.0 - fuel) * 3.0))
+	_mk_btn("Refuel (%d)" % need, func(): _refuel())
+
+func _refuel() -> void:
+	var need := int(ceil((100.0 - fuel) * 3.0))
+	var c := mini(money, need)
+	fuel = minf(100.0, fuel + c / 3.0)
+	money -= c
+	_open_menu("Fuel tank refilled." if c >= need else "Not enough money for a full tank.")
+
+func _start_job(i: int) -> void:
+	if fuel < 5.0:
+		_open_menu("Out of fuel. Refuel first.")
+		return
+	job = offers[i]
+	z0 = truck.position.z
+	tleft = float(job["t"])
+	gate.position = Vector3(0, 0, z0 - float(job["d"]))
+	gate.visible = true
+	menu_root.visible = false
+	menu_open = false
+	_toast("Deliver %s to %s" % [job["cargo"], CITIES[job["to"]][0]])
+
+func _toast(t: String) -> void:
+	toast_lbl.text = t
+	toast_t = 3.5
+
+func _game_tick(dt: float) -> void:
+	if not job.is_empty():
+		var travelled: float = z0 - truck.position.z
+		var rem: float = float(job["d"]) - travelled
+		tleft -= dt
+		fuel = maxf(0.0, fuel - speed * dt * 0.0045 * (1.0 + float(job["tons"]) / 60.0))
+		hud.text = "%d EGP   Fuel %d%%\n%s %dt > %s\n%dm   %ds" % [money, int(fuel), job["cargo"], job["tons"], CITIES[job["to"]][0], maxi(0, int(rem)), maxi(0, int(tleft))]
+		if rem <= 6.0:
+			var late := tleft < 0.0
+			var pay: int = int(job["pay"]) / (2 if late else 1)
+			money += pay
+			jobs_done += 1
+			city = job["to"]
+			_open_menu(("Late, half pay: %d EGP" if late else "Delivered on time! +%d EGP") % pay)
+			return
+		if fuel <= 0.0 and speed < 1.0:
+			var fee := mini(money, 100)
+			money -= fee
+			fuel = 20.0
+			_open_menu("Out of fuel. Tow fee %d EGP." % fee)
+	else:
+		hud.text = "%d EGP   Fuel %d%%" % [money, int(fuel)]
+	if toast_t > 0.0:
+		toast_t -= dt
+		toast_lbl.modulate.a = clampf(toast_t, 0.0, 1.0)
+	else:
+		toast_lbl.modulate.a = 0.0
+
 var rcam: Camera3D
 func _names(n: Node, d: int) -> void:
 	if n is MeshInstance3D:
@@ -452,26 +654,33 @@ func _demo() -> void:
 	if demo_t0 < 0:
 		demo_t0 = Time.get_ticks_msec()
 	var t := (Time.get_ticks_msec() - demo_t0) / 1000.0
-	var plan := [[6.0, 0, 0.0], [12.0, 1, 0.0], [18.0, 2, 0.0], [26.0, 0, 0.6], [34.0, 2, 0.6]]
+	if demo_t0 >= 0 and menu_open and (Time.get_ticks_msec() - demo_t0) / 1000.0 > 9.0 and demo_n >= 1:
+		_start_job(0)
+	var plan := [[6.0, 0, 0.0], [14.0, 0, 0.0], [20.0, 1, 0.0], [28.0, 0, 0.5], [36.0, 2, 0.5]]
 	if demo_n < plan.size():
 		var p = plan[demo_n]
 		if t >= p[0]:
 			camview = p[1]
-			gas = demo_n >= 3
+			gas = demo_n >= 2
 			wsteer = p[2]
-			if demo_n >= 1:
-				var img := get_viewport().get_texture().get_image()
-				var er := img.save_png("user://s%d.png" % demo_n)
-				print("DEMO saved ", demo_n, " err=", er, " ", OS.get_user_data_dir())
+			var img := get_viewport().get_texture().get_image()
+			var er := img.save_png("user://s%d.png" % (demo_n + 1))
+			print("DEMO saved ", demo_n + 1, " err=", er)
 			demo_n += 1
-	elif demo_n == plan.size() and t > 40.0:
+	elif demo_n == plan.size() and t > 44.0:
 		var img2 := get_viewport().get_texture().get_image()
-		img2.save_png("user://s%d.png" % demo_n)
+		img2.save_png("user://s6.png")
 		demo_n += 1
 
 func _process(dt: float) -> void:
 	_demo()
 	_engine_fill()
+	if menu_open:
+		gas = false
+		brake = true
+	_game_tick(dt)
+	if fuel <= 0.0:
+		gas = false
 	if gas: speed = min(speed + 10.0 * dt, 28.0)
 	elif brake: speed = max(speed - 25.0 * dt, 0.0)
 	else: speed = max(speed - 4.0 * dt, 0.0)
