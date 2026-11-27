@@ -200,7 +200,7 @@ func _ready() -> void:
 			var side2 := 1.0 if rng.randf() < 0.5 else -1.0
 			var s2 := rng.randf_range(0.9, 1.5)
 			var b2 := Basis().rotated(Vector3.UP, rng.randf() * 6.28).scaled(Vector3(s2, s2 * rng.randf_range(0.9, 1.3), s2))
-			mm2.set_instance_transform(n, Transform3D(b2, Vector3(side2 * rng.randf_range(8.0, 60.0), 0, rng.randf_range(-TILE / 2.0, TILE / 2.0))))
+			mm2.set_instance_transform(n, Transform3D(b2, Vector3(side2 * rng.randf_range(13.0, 60.0), 0, rng.randf_range(-TILE / 2.0, TILE / 2.0))))
 		var mi2 := MultiMeshInstance3D.new()
 		mi2.multimesh = mm2
 		mi2.material_override = _tree_mat()
@@ -211,7 +211,7 @@ func _ready() -> void:
 		mm.instance_count = 45
 		for n in range(45):
 			var side := 1.0 if rng.randf() < 0.5 else -1.0
-			var x := side * (rng.randf_range(9.0, 70.0))
+			var x := side * (rng.randf_range(13.0, 70.0))
 			var z := rng.randf_range(-TILE / 2.0, TILE / 2.0)
 			var s := rng.randf_range(0.8, 1.7)
 			var b := Basis().rotated(Vector3.UP, rng.randf() * 6.28).scaled(Vector3(s, s * rng.randf_range(0.9, 1.4), s))
