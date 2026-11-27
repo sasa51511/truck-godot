@@ -228,7 +228,7 @@ func _ready() -> void:
 		fb.size = Vector3(0.37, 0.55, 0.03)
 		frm.mesh = fb
 		frm.material_override = dm
-		frm.position = mr.position + Vector3(0, 0, 0.03)
+		frm.position = mr.position + Vector3(0, 0, -0.03)
 		frm.rotation.y = mr.rotation.y
 		dash.add_child(frm)
 	var sw := MeshInstance3D.new()
@@ -309,7 +309,7 @@ func _engine_fill() -> void:
 		eng_play.push_frame(v)
 
 func _find_glass(n: Node) -> void:
-	if n is MeshInstance3D and (n.name == "door_L_mesh" or n.name == "door_R_mesh"):
+	if n is MeshInstance3D and (n.name == "body"):
 		hide_nodes.append(n)
 	if n is MeshInstance3D:
 		var mi := n as MeshInstance3D
