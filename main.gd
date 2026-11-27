@@ -236,9 +236,7 @@ func _set(k: String, v: bool) -> void:
 		"r": kr = v
 
 func _process(dt: float) -> void:
-	if OS.get_model_name().to_lower().contains("sdk") or OS.get_model_name().to_lower().contains("emulator"):
-		gas = true
-	if gas: speed = min(speed + 10.0 * dt, 28.0)
+		if gas: speed = min(speed + 10.0 * dt, 28.0)
 	elif brake: speed = max(speed - 25.0 * dt, 0.0)
 	else: speed = max(speed - 4.0 * dt, 0.0)
 	var s := (1.0 if kr else 0.0) - (1.0 if kl else 0.0)
@@ -249,6 +247,6 @@ func _process(dt: float) -> void:
 	for t in tiles:
 		if t.position.z > truck.position.z + 60.0:
 			t.position.z -= TILE * NT
-	cam.position = truck.position + Vector3(truck.position.x * -0.4, 7.0, 27.0)
-	cam.look_at(truck.position + Vector3(0, 2.0, -10.0))
+	cam.position = truck.position + Vector3(truck.position.x * -0.4, 4.6, 17.0)
+	cam.look_at(truck.position + Vector3(0, 2.2, -8.0))
 	lbl.text = "%d km/h" % int(speed * 3.6)
