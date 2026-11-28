@@ -1,0 +1,344 @@
+11-28 10:26:24.363  2998  3131 I godot   : MESH cabover-sleeper_24 pos=(0, 0.94, -1.54) sz=(2, 0.18, 0.08)
+11-28 10:26:24.363  2998  3131 I godot   : MESH Mesh2 pos=(-1.11, 1.64, -0.7) sz=(0.05, 1.24, 2)
+11-28 10:26:24.363  2998  3131 I godot   : MESH cabover-sleeper_26 pos=(0, 3.28, -1.2) sz=(2, 0.09, 0.14)
+11-28 10:26:24.363  2998  3131 I godot   : MESH fifth pos=(0, 1.16, 1.3) sz=(2, 0.16, 2)
+11-28 10:26:24.462  2998  3131 D Godot   : OnGodotMainLoopStarted
+11-28 10:26:25.014   282  3533 W resolv  : SSL_connect ssl error =5, mark 0xf0065: Connection refused
+11-28 10:26:25.388   282  3558 W resolv  : SSL_connect ssl error =5, mark 0xf0065: Connection refused
+11-28 10:26:25.970  2605  2642 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:26:26.741  2998  3131 I godot   : DEMO start model=sdk_gphone64_x86_64
+11-28 10:26:26.794  2605  3394 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:26:29.017  2312  2531 W BugleNetwork: RegistrationProvider: Got error in StatusRuntimeException. Notifying tachyon registration error listeners, error: 1, status: INVALID_ARGUMENT
+11-28 10:26:29.869  2605  3215 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:26:31.629   481   576 E RoleControllerManager: Error calling grantDefaultRoles()
+11-28 10:26:39.435  3914  3948 W NativeCrashHandlerImpl: java.lang.UnsatisfiedLinkError: dlopen failed: library "libnative_crash_handler_jni.so" not found
+11-28 10:26:40.619  3914  3998 W err     : Error changing state for com.google.android.apps.docs.sync.syncadapter.DocsSyncAdapterService
+11-28 10:26:40.620  3914  3998 W err     : Error changing state for com.google.android.apps.docs.sync.syncadapter.DocsSyncAdapterService
+11-28 10:26:40.628  3914  3998 W err     : Error changing state for com.google.android.apps.docs.drive.directsharing.ChooserTargetService
+11-28 10:26:40.628  3914  3998 W err     : Error changing state for com.google.android.apps.docs.drive.directsharing.ChooserTargetService
+11-28 10:26:40.630  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.documentcreation.WidgetDocumentCreatorActivity
+11-28 10:26:40.633  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.documentcreation.WidgetDocumentCreatorActivity
+11-28 10:26:40.634  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.documentcreation.ExternalDocumentCreatorActivity
+11-28 10:26:40.634  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.documentcreation.ExternalDocumentCreatorActivity
+11-28 10:26:40.635  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.widgets.NewDocumentWidgetActivity
+11-28 10:26:40.635  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.widgets.NewDocumentWidgetActivity
+11-28 10:26:40.636  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.export.FileContentProvider
+11-28 10:26:40.636  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.export.FileContentProvider
+11-28 10:26:40.636  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.copypaste.AndroidClipboardContentProvider
+11-28 10:26:40.636  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.copypaste.AndroidClipboardContentProvider
+11-28 10:26:40.637  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.copypaste.AndroidImageContentProvider
+11-28 10:26:40.637  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.copypaste.AndroidImageContentProvider
+11-28 10:26:40.637  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.inserttool.clipboard.InsertToolClipboardContentProvider
+11-28 10:26:40.637  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.inserttool.clipboard.InsertToolClipboardContentProvider
+11-28 10:26:40.638  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.inserttool.clipboard.InsertToolImageContentProvider
+11-28 10:26:40.638  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.shared.inserttool.clipboard.InsertToolImageContentProvider
+11-28 10:26:40.641  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.kix.conversion.KixOnlineImportActivity
+11-28 10:26:40.641  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.kix.conversion.KixOnlineImportActivity
+11-28 10:26:40.642  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.ritz.conversion.RitzOnlineImportActivity
+11-28 10:26:40.644  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.ritz.conversion.RitzOnlineImportActivity
+11-28 10:26:40.649  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.punch.conversion.PunchOnlineImportActivity
+11-28 10:26:40.649  3914  3998 W err     : Error changing state for com.google.android.apps.docs.editors.punch.conversion.PunchOnlineImportActivity
+11-28 10:26:40.812   481  4017 I BootReceiver: Checking for fsck errors
+11-28 10:26:42.301  1570  1583 I AiAiEcho: Settings cha with uri: content://settings/secure/send_action_app_error
+11-28 10:26:45.758   300   300 W WVCdm   : [oemcrypto_adapter_dynamic.cpp(1589):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+11-28 10:26:48.427  4255  4326 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:26:49.977   481  1796 E RecoverySnapshotStorage: Error reading snapshot for 10120 from disk
+11-28 10:26:50.210  2605  3604 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:26:51.309   481  1309 E RecoverySnapshotStorage: Error reading snapshot for 10120 from disk
+11-28 10:26:51.322   149  3417 E keystore2: keystore2::error: In import_key.
+11-28 10:26:51.322   149  3417 E keystore2:     3: Error::Rc(ResponseCode(4))
+11-28 10:26:51.380  2998  3131 I godot   : DEMO saved 1 err=0
+11-28 10:26:51.383  2998  3131 I godot   : WEATHER wmode=0 night=0 rain=0 exp=1 bgmul=1 fogsky=0.44999998807907
+11-28 10:26:52.786   970  1403 D MmsSmsDatabaseHelper: [MmsSmsDb] tableName: threads hasAutoIncrement: CREATE TABLE threads (_id INTEGER PRIMARY KEY AUTOINCREMENT,date INTEGER DEFAULT 0,message_count INTEGER DEFAULT 0,recipient_ids TEXT,snippet TEXT,snippet_cs INTEGER DEFAULT 0,read INTEGER DEFAULT 1,archived INTEGER DEFAULT 0,type INTEGER DEFAULT 0,error INTEGER DEFAULT 0,has_attachment INTEGER DEFAULT 0) result: true
+11-28 10:26:57.580  2998  3131 I godot   : DEMO saved 2 err=0
+11-28 10:26:58.817  1570  1600 I AiAiEcho: Settings cha with uri: content://settings/secure/send_action_app_error
+11-28 10:26:59.672   481   481 E JobServiceContext: Error sending onStart message to 'androidx.work.impl.background.systemjob.SystemJobService' 
+11-28 10:27:01.046   481   899 E RecoverySnapshotStorage: Error reading snapshot for 10120 from disk
+11-28 10:27:01.082   149  3417 E keystore2: keystore2::error: In import_key.
+11-28 10:27:01.082   149  3417 E keystore2:     3: Error::Rc(ResponseCode(4))
+11-28 10:27:01.887  1273  4054 E Icing   : Cursor call threw an exception: no such table: Alarm_cross_device_com.google.android.deskclock_seq_table (code 1 SQLITE_ERROR): , while compiling: SELECT * FROM [Alarm_cross_device_com.google.android.deskclock_seq_table] WHERE seqno>0 AND tag IS NULL ORDER BY seqno LIMIT 20
+11-28 10:27:01.950  1273  4054 E Icing   : Cursor call threw an exception: no such table: Stopwatch_cross_device_com.google.android.deskclock_seq_table (code 1 SQLITE_ERROR): , while compiling: SELECT * FROM [Stopwatch_cross_device_com.google.android.deskclock_seq_table] WHERE seqno>0 AND tag IS NULL ORDER BY seqno LIMIT 20
+11-28 10:27:04.636  2998  3131 I godot   : DEMO saved 3 err=0
+11-28 10:27:05.929  1700  1700 E A       : onError
+11-28 10:27:05.929  1700  1700 E A       : com.google.android.apps.gsa.shared.speech.a.m: errorCode: 65561, engine: 2
+11-28 10:27:05.929  1700  1700 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.o: errorCode: 65586, engine: 2
+11-28 10:27:05.929  1700  1700 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.k: errorCode: 401, engine: 2
+11-28 10:27:05.932  1700  2071 E cr_CronetUrlRequestContext: com.google.android.apps.gsa.shared.r.d: Error code: 262182
+11-28 10:27:06.660   481  1914 W BatteryExternalStatsWorker: error reading Bluetooth stats: 11
+11-28 10:27:10.143  2998  3131 I godot   : DEMO saved 4 err=0
+11-28 10:27:10.411  1079  1095 W BaseSearchIndex: Error initial controller
+11-28 10:27:13.866   481  1656 E RecoverySnapshotStorage: Error reading snapshot for 10120 from disk
+11-28 10:27:13.880   149  3417 E keystore2: keystore2::error: In import_key.
+11-28 10:27:13.880   149  3417 E keystore2:     3: Error::Rc(ResponseCode(4))
+11-28 10:27:15.702  2998  3131 I godot   : DEMO saved 5 err=0
+11-28 10:27:16.974  1273  4977 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:27:19.448   481   576 E RoleControllerManager: Error calling grantDefaultRoles()
+11-28 10:27:21.160   481   576 E RoleControllerManager: Error calling grantDefaultRoles()
+11-28 10:27:21.450  1700  1700 E A       : onError
+11-28 10:27:21.450  1700  1700 E A       : com.google.android.apps.gsa.shared.speech.a.m: errorCode: 65561, engine: 2
+11-28 10:27:21.450  1700  1700 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.o: errorCode: 65586, engine: 2
+11-28 10:27:21.450  1700  1700 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.k: errorCode: 401, engine: 2
+11-28 10:27:21.456  1700  2082 E cr_CronetUrlRequestContext: com.google.android.apps.gsa.shared.r.d: Error code: 262182
+11-28 10:27:22.217  1273  3153 W ChimeraConfigurator: Error syncing flags: zgv: SYNC_TIMEOUT, java.util.concurrent.TimeoutException: Timed out waiting for Task
+11-28 10:27:27.224  1039  2292 E bwfc    : Phenotype API error. Event # edax@13a34cda, EventCode: 32 [CONTEXT service_id=51 ]
+11-28 10:27:29.010  5213  5222 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:27:29.910  1273  5106 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:27:31.410  2605  5261 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs ANDROID_EMU_hwc_color_transform ANDROID_EMU_hwc_display_power_mode GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-28 10:27:40.060   282  3113 W resolv  : SSL_connect ssl error =5, mark 0xf0064: Connection refused
+11-28 10:27:46.021  1039  2292 E bwfc    : Phenotype API error. Event # edax@3913e1c8, EventCode: 5 [CONTEXT service_id=51 ]
+11-28 10:27:49.100  1039  1321 E bwfc    : Phenotype API error. Event # edax@ceaf9894, EventCode: 5 [CONTEXT service_id=51 ]
+11-28 10:27:51.151  1700  2070 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 10:27:56.478  1039  1321 E bwfc    : Phenotype API error. Event # edax@92ac5a39, EventCode: 5 [CONTEXT service_id=51 ]
+11-28 10:27:57.107  1039  1321 E bwfc    : Phenotype API error. Event # edax@2ae56fa1, EventCode: 5 [CONTEXT service_id=51 ]
+11-28 10:28:00.255  1039  5447 E bwfc    : Phenotype API error. Event # edax@c78eb7f1, EventCode: 4 [CONTEXT service_id=51 ]
+11-28 10:28:02.102  1700  2044 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 10:28:02.450  4392  4392 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:03.593  5466  5466 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:04.110  5483  5483 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:04.464  5502  5502 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:04.646  5519  5519 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:04.991  5538  5538 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:05.367  5555  5555 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:06.175   481   481 E PermissionControllerManager: Error updating user_sensitive flags for uid 10166
+11-28 10:28:06.269  5573  5573 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:06.276  1700  2044 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 10:28:07.227  5606  5606 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:08.160  5633  5633 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:08.673  5658  5658 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:09.048  5677  5677 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:09.566  5694  5694 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:09.849  5712  5712 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:09.870  1700  2070 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 10:28:10.231  5729  5729 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:10.731  5746  5746 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:10.892  5763  5763 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:11.078  5779  5779 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+11-28 10:28:15.577  1700  1700 E A       : onError
+11-28 10:28:15.577  1700  1700 E A       : com.google.android.apps.gsa.shared.speech.a.m: errorCode: 65561, engine: 2
+11-28 10:28:15.577  1700  1700 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.o: errorCode: 65586, engine: 2
+11-28 10:28:15.577  1700  1700 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.k: errorCode: 401, engine: 2
+11-28 10:28:20.441   481  1796 W SoundTriggerService: error onStop(): Model 9f6ad62a-1f0b-11e7-87c5-40a8f03d3f15 has no stats available
+Physical size: 320x640
+wheel-0--1_rubber pos=(1.02, 0.5, -0.95) sz=(0.56, 2, 1.99)
+wheel-0--1_alloy pos=(1.09, 0.5, -0.95) sz=(0.58, 2, 1.99)
+wheel-0--1_steel pos=(1.16, 0.5, -0.95) sz=(0.15, 2, 1.97)
+wheel-0-1_rubber pos=(-1.03, 0.5, -0.95) sz=(0.56, 2, 1.99)
+wheel-0-1_alloy pos=(-1.1, 0.5, -0.95) sz=(0.58, 2, 1.99)
+wheel-0-1_steel pos=(-1.19, 0.5, -0.95) sz=(0.15, 2, 1.97)
+wheel-1--1_rubber pos=(0.9, 0.5, 1.1) sz=(1.08, 2, 1.99)
+wheel-1--1_alloy pos=(1.1, 0.5, 1.1) sz=(0.58, 2, 1.99)
+wheel-1--1_steel pos=(1.16, 0.5, 1.1) sz=(0.15, 2, 1.97)
+wheel-1-1_rubber pos=(-0.89, 0.5, 1.1) sz=(1.08, 2, 1.99)
+wheel-1-1_alloy pos=(-1.09, 0.5, 1.1) sz=(0.58, 2, 1.99)
+wheel-1-1_steel pos=(-1.19, 0.5, 1.1) sz=(0.15, 2, 1.97)
+wheel-2--1_rubber pos=(0.9, 0.5, 2.2) sz=(1.08, 2, 1.99)
+wheel-2--1_alloy pos=(1.1, 0.5, 2.2) sz=(0.58, 2, 1.99)
+wheel-2--1_steel pos=(1.16, 0.5, 2.2) sz=(0.15, 2, 1.97)
+wheel-2-1_rubber pos=(-0.89, 0.5, 2.2) sz=(1.08, 2, 1.99)
+wheel-2-1_alloy pos=(-1.09, 0.5, 2.2) sz=(0.58, 2, 1.99)
+wheel-2-1_steel pos=(-1.19, 0.5, 2.2) sz=(0.15, 2, 1.97)
+cabover-sleeper_18 pos=(0, 1.81, 0.69) sz=(1.2, 1.16, 2)
+cabover-sleeper_19 pos=(0, 2.13, -0.15) sz=(1.63, 1.67, 2)
+cabover-sleeper_20 pos=(0, 1.01, 0.44) sz=(0.98, 0.56, 2)
+cabover-sleeper_21 pos=(0, 2.1, -0.01) sz=(1.48, 1.86, 2)
+cabover-sleeper_22 pos=(0, 2.83, -0.88) sz=(2, 0.47, 0.89)
+Mesh pos=(1.11, 1.64, -0.7) sz=(0.05, 1.24, 2)
+cabover-sleeper_24 pos=(0, 0.94, -1.54) sz=(2, 0.18, 0.08)
+Mesh2 pos=(-1.11, 1.64, -0.7) sz=(0.05, 1.24, 2)
+cabover-sleeper_26 pos=(0, 3.28, -1.2) sz=(2, 0.09, 0.14)
+fifth pos=(0, 1.16, 1.3) sz=(2, 0.16, 2)
+2998
+files:
+s1.png
+s10.png
+s2.png
+s3.png
+s4.png
+s5.png
+s6.png
+s7.png
+s8.png
+s9.png
+shader_cache
+vulkan
+
+files/shader_cache:
+BlitShaderRD
+BlurRasterShaderRD
+BokehDofRasterShaderRD
+CanvasOcclusionShaderRD
+CanvasSdfShaderRD
+CanvasShaderRD
+CopyShaderRD
+CopyToFbShaderRD
+CubeToDpShaderRD
+CubemapDownsamplerRasterShaderRD
+CubemapFilterRasterShaderRD
+CubemapRoughnessRasterShaderRD
+LuminanceReduceRasterShaderRD
+MotionVectorsShaderRD
+ParticlesCopyShaderRD
+ParticlesShaderRD
+SceneForwardMobileShaderRD
+ShadowFrustumShaderRD
+SkeletonShaderRD
+SkyShaderRD
+SortShaderRD
+SpecularMergeShaderRD
+TonemapShaderRD
+
+files/shader_cache/BlitShaderRD:
+c38d072813150b44f68e62e3e817478301bdc610f726865c2bd30016893c23dd
+
+files/shader_cache/BlitShaderRD/c38d072813150b44f68e62e3e817478301bdc610f726865c2bd30016893c23dd:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/BlurRasterShaderRD:
+75c3666e020d4b5d7c97877b1de5ad9472faa7b13219263dd3f6d34cbe2f2a47
+
+files/shader_cache/BlurRasterShaderRD/75c3666e020d4b5d7c97877b1de5ad9472faa7b13219263dd3f6d34cbe2f2a47:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/BokehDofRasterShaderRD:
+3a0c4909d4f78bf196dd03d24e4e8988e6ea3b9407fcf6f744e4555a572a2d3e
+
+files/shader_cache/BokehDofRasterShaderRD/3a0c4909d4f78bf196dd03d24e4e8988e6ea3b9407fcf6f744e4555a572a2d3e:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CanvasOcclusionShaderRD:
+8d85882a0a16a994d4dbfbf039ac0a836bf0316b46abeb4c74713b2dc9fe8aae
+
+files/shader_cache/CanvasOcclusionShaderRD/8d85882a0a16a994d4dbfbf039ac0a836bf0316b46abeb4c74713b2dc9fe8aae:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CanvasSdfShaderRD:
+81d57d77dd0b05a30ced4828a9654a5b1b7ae5a8ff63de242ca5c67c6393cc82
+
+files/shader_cache/CanvasSdfShaderRD/81d57d77dd0b05a30ced4828a9654a5b1b7ae5a8ff63de242ca5c67c6393cc82:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CanvasShaderRD:
+fdf86e0154a6d60a7669e4a6d04da5fac06d3c58f6852cc9b7abb80f7ce807d7
+
+files/shader_cache/CanvasShaderRD/fdf86e0154a6d60a7669e4a6d04da5fac06d3c58f6852cc9b7abb80f7ce807d7:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+45fb1ddc6499e56682916a355ce2839e61f42dfe.cache
+8a7277c8d3ac029b087c3fa9c55de85560be5119.cache
+9bcac378d4e61e619a04bca2518f348d5c571569.cache
+c58570947be7f76937b1582424c0fd3d81be0352.cache
+ddbe30d4d1be5d69b00075293fd27da8decd4af2.cache
+
+files/shader_cache/CopyShaderRD:
+d8b3a6ccb1614c3554da5c6a1023461410e81794b6d9d6ec97ab855604a49404
+
+files/shader_cache/CopyShaderRD/d8b3a6ccb1614c3554da5c6a1023461410e81794b6d9d6ec97ab855604a49404:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CopyToFbShaderRD:
+60be560581dd5bc4a727e9d0f342d190ced731fd1dafd635e628aca7811c7b41
+
+files/shader_cache/CopyToFbShaderRD/60be560581dd5bc4a727e9d0f342d190ced731fd1dafd635e628aca7811c7b41:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CubeToDpShaderRD:
+fe2a953b2193c290dcee1420d142fa46d56b9b3a3af3f6d5c2c457359a03f4a8
+
+files/shader_cache/CubeToDpShaderRD/fe2a953b2193c290dcee1420d142fa46d56b9b3a3af3f6d5c2c457359a03f4a8:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CubemapDownsamplerRasterShaderRD:
+c83531fb88906bbcb3f77a2dabb5b9fb8aa1618313aea4651bb2cd15fc97a190
+
+files/shader_cache/CubemapDownsamplerRasterShaderRD/c83531fb88906bbcb3f77a2dabb5b9fb8aa1618313aea4651bb2cd15fc97a190:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CubemapFilterRasterShaderRD:
+89fc2ab384dbce34afad4f9130f41162064e0e849fb4fd2e1ff6b7b63db1466d
+
+files/shader_cache/CubemapFilterRasterShaderRD/89fc2ab384dbce34afad4f9130f41162064e0e849fb4fd2e1ff6b7b63db1466d:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/CubemapRoughnessRasterShaderRD:
+eafe45003fb6eb84c25715ed7ae2887258f2481216c87f22d99a07670963e020
+
+files/shader_cache/CubemapRoughnessRasterShaderRD/eafe45003fb6eb84c25715ed7ae2887258f2481216c87f22d99a07670963e020:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/LuminanceReduceRasterShaderRD:
+3f10bf7346026b187b0d5da0426d634cdefe08851804026b9977d20fd22f3309
+
+files/shader_cache/LuminanceReduceRasterShaderRD/3f10bf7346026b187b0d5da0426d634cdefe08851804026b9977d20fd22f3309:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/MotionVectorsShaderRD:
+a2ac6b4108619eaa0b518ea579fb6076a5b7804ac51c635a2eca7cc6b4f37975
+
+files/shader_cache/MotionVectorsShaderRD/a2ac6b4108619eaa0b518ea579fb6076a5b7804ac51c635a2eca7cc6b4f37975:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/ParticlesCopyShaderRD:
+897b12236f0856ba1368b8267ca73b397a903d56f46811bcb1379e59cea8adab
+
+files/shader_cache/ParticlesCopyShaderRD/897b12236f0856ba1368b8267ca73b397a903d56f46811bcb1379e59cea8adab:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/ParticlesShaderRD:
+9a884a5d26fba431039b99123df99e7170cc0b0a2a506053cb4d1069e5b71f07
+
+files/shader_cache/ParticlesShaderRD/9a884a5d26fba431039b99123df99e7170cc0b0a2a506053cb4d1069e5b71f07:
+f128cab0b22fb7e0d9f023d6cdb81309be392d95.cache
+
+files/shader_cache/SceneForwardMobileShaderRD:
+e04583840967a102ad679c1f9dc8245ba93e8f93171efa7c1396096c3b1a597e
+
+files/shader_cache/SceneForwardMobileShaderRD/e04583840967a102ad679c1f9dc8245ba93e8f93171efa7c1396096c3b1a597e:
+0a7943b37b06fe51b0b824451a7a622e32dcce84.cache
+0f1bcf11b9f7757773a7866f1cd2e297cb2acf5f.cache
+1bd7ae4211ed816f2f3b19afd38f726b5d9ef376.cache
+3327725e7c4cb591f9384f7b6e387e41d8b5a23b.cache
+4aee911049f38ef02b9d22683dc20f530f2c8c40.cache
+5c3b5bb282898a2232bc6baaa8eff03e187cb979.cache
+7fb66440f65dac23b75016fc52fb82ae26e9393f.cache
+c2a3af90d63b7f1f9168c5149147abe99172c9dc.cache
+c911b2eb203b7525047b1fc26929407fb3d4191d.cache
+
+files/shader_cache/ShadowFrustumShaderRD:
+86a2575cf2f2ccc193f56d66178857259835e0306675b0f376d087117b467838
+
+files/shader_cache/ShadowFrustumShaderRD/86a2575cf2f2ccc193f56d66178857259835e0306675b0f376d087117b467838:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/SkeletonShaderRD:
+7f760a4d68298b02bfb28ffee808ee3b08b08381be2ecfad09f3e0f1cbbd923a
+
+files/shader_cache/SkeletonShaderRD/7f760a4d68298b02bfb28ffee808ee3b08b08381be2ecfad09f3e0f1cbbd923a:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/SkyShaderRD:
+b0f863cf430ad6d166ead9297de9c6924ec7c00858e7f2981f6e3aa23aa1e122
+
+files/shader_cache/SkyShaderRD/b0f863cf430ad6d166ead9297de9c6924ec7c00858e7f2981f6e3aa23aa1e122:
+03e3b11c69e24394b2d955a8c0ba85587bb70839.cache
+0b4853804ca518e6946db2675dd6b50da4828a87.cache
+71a2b0f5ee2b6fbaa6487f1ed619e10c52b07cee.cache
+de678811d1bad3cad4892a8db7b6ea0be197d51d.cache
+
+files/shader_cache/SortShaderRD:
+b5296582b7cbc09811204df4b0ddcc2d25619dd18008bac81eaa1d16b6ac049e
+
+files/shader_cache/SortShaderRD/b5296582b7cbc09811204df4b0ddcc2d25619dd18008bac81eaa1d16b6ac049e:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/SpecularMergeShaderRD:
+9d57330b0a9e24a163f5b3330e59b04e07009fdd025e530c668dea90fd72ffbb
+
+files/shader_cache/SpecularMergeShaderRD/9d57330b0a9e24a163f5b3330e59b04e07009fdd025e530c668dea90fd72ffbb:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/shader_cache/TonemapShaderRD:
+e5bd803fd1e52a5d7b06667bc2284ef386f1ae76beb0c368c15c1bcf74ac0096
+
+files/shader_cache/TonemapShaderRD/e5bd803fd1e52a5d7b06667bc2284ef386f1ae76beb0c368c15c1bcf74ac0096:
+087916079fba7c625e62b0c2cca570e0fb87c99a.cache
+
+files/vulkan:
